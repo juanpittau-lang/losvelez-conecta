@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Vélez Conecta</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tierra: #C4601A;
+    --tierra-light: #E8834A;
+    --tierra-dark: #8B3E0A;
+    --arena: #F5EDD8;
+    --arena-dark: #E8D9BB;
+    --verde: #3D6B4F;
+    --verde-light: #5A9470;
+    --cielo: #2C5F7A;
+    --cielo-light: #4A8BA8;
+    --blanco: #FEFAF4;
+    --gris: #6B6355;
+    --gris-light: #A09880;
+    --sombra: rgba(70,50,20,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--blanco);
+    color: #2A2018;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== MOBILE FRAME ===== */
+  .device-frame {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0f05 0%, #2d1a08 50%, #1a2a1a 100%);
+    padding: 30px 16px;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .phone {
+    width: 375px;
+    min-height: 812px;
+    background: var(--blanco);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.1);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .screen {
+    height: 812px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+
+  .label {
+    color: rgba(255,255,255,0.5);
+    font-size: 11px;
+    text-align: center;
+    margin-top: 12px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ===== SCREEN 1: HOME ===== */
+  .home-header {
+    background: linear-gradient(160deg, var(--tierra-dark) 0%, var(--tierra) 60%, var(--tierra-light) 100%);
+    padding: 52px 24px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .home-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 30px;
+    background: var(--blanco);
+    border-radius: 30px 30px 0 0;
+  }
+
+  .app-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .logo-text span {
+    display: block;
+    font-size: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    opacity: 0.8;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .home-title {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 6px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-subtitle {
+    color: rgba(255,255,255,0.75);
+    font-size: 13px;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Search bar */
+  .search-wrap {
+    padding: 20px 20px 0;
+  }
+
+  .search-bar {
+    background: white;
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 20px var(--sombra);
+    border: 1.5px solid var(--arena-dark);
+  }
+
+  .search-bar input {
+    border: none; outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #2A2018;
+    flex: 1;
+    background: transparent;
+  }
+
+  .search-bar input::placeholder { color: var(--gris-light); }
+
+  .search-icon { color: var(--tierra); font-size: 16px; }
+
+  /* Categorías */
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gris);
+    padding: 20px 20px 12px;
+  }
+
+  .cats-scroll {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cats-scroll::-webkit-scrollbar { display: none; }
+
+  .cat-pill {
+    flex-shrink: 0;
+    background: white;
+    border: 1.5px solid var(--arena-dark);
+    border-radius: 20px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .cat-pill.active {
+    background: var(--tierra);
+    border-color: var(--tierra);
+    color: white;
+  }
+
+  .cat-pill span:first-child { font-size: 14px; }
+  .cat-pill span:last-child { font-size: 12px; font-weight: 500; }
+
+  /* Comercios destacados */
+  .featured-card {
+    margin: 4px 20px;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px var(--sombra);
+    border: 1.5px solid var(--arena-dark);
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .featured-card:active { transform: scale(0.98); }
+
+  .card-img {
+    height: 130px;
+    background: linear-gradient(135deg, var(--verde) 0%, var(--verde-light) 100%);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .card-img.tipo2 { background: linear-gradient(135deg, var(--cielo) 0%, var(--cielo-light) 100%); }
+  .card-img.tipo3 { background: linear-gradient(135deg, var(--tierra-dark) 0%, var(--tierra) 100%); }
+
+  .card-img-emoji {
+    font-size: 48px;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    opacity: 0.35;
+  }
+
+  .card-badge {
+    background: var(--tierra);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-badge.verde { background: var(--verde); }
+  .card-badge.gratis {
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.4);
+  }
+
+  .card-body { padding: 14px; }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .card-cat {
+    font-size: 11px;
+    color: var(--gris-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .card-info {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--gris);
+  }
+
+  .card-info-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .open-dot {
+    width: 7px; height: 7px;
+    background: #4CAF50;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .card-locked {
+    background: var(--arena);
+    border: 1.5px dashed var(--arena-dark);
+    border-radius: 18px;
+    margin: 0 20px 12px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.7;
+  }
+
+  .locked-icon {
+    width: 40px; height: 40px;
+    background: var(--arena-dark);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .locked-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gris);
+    margin-bottom: 2px;
+  }
+
+  .locked-sub {
+    font-size: 11px;
+    color: var(--gris-light);
+  }
+
+  .locked-cta {
+    margin-left: auto;
+    background: var(--tierra);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Oferta banner */
+  .oferta-banner {
+    margin: 4px 20px 16px;
+    background: linear-gradient(135deg, var(--verde-light), var(--verde));
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+  }
+
+  .oferta-emoji { font-size: 28px; }
+  .oferta-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .oferta-sub { font-size: 11px; opacity: 0.8; }
+
+  /* Bottom nav */
+  .bottom-nav {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    border-top: 1px solid var(--arena-dark);
+    display: flex;
+    padding: 10px 0 20px;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+
+  .nav-icon { font-size: 20px; }
+  .nav-label { font-size: 9px; font-weight: 500; color: var(--gris-light); text-transform: uppercase; letter-spacing: 0.05em; }
+  .nav-item.active .nav-label { color: var(--tierra); }
+  .nav-item.active .nav-icon { filter: none; }
+
+  /* ===== SCREEN 2: FICHA COMERCIO ===== */
+  .ficha-header {
+    background: linear-gradient(160deg, var(--verde) 0%, var(--verde-light) 100%);
+    height: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .ficha-header-emoji { font-size: 80px; opacity: 0.3; }
+
+  .ficha-back {
+    position: absolute;
+    top: 48px; left: 16px;
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+  }
+
+  .ficha-badge-wrap {
+    position: absolute;
+    top: 48px; right: 16px;
+  }
+
+  .ficha-body {
+    padding: 20px;
+    flex: 1;
+  }
+
+  .ficha-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+
+  .ficha-cat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .ficha-verified {
+    background: var(--tierra);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .ficha-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .action-btn {
+    background: var(--arena);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .action-btn.primary {
+    background: var(--tierra);
+    color: white;
+  }
+
+  .action-btn-icon { font-size: 20px; }
+  .action-btn-label { font-size: 10px; font-weight: 600; color: var(--gris); }
+  .action-btn.primary .action-btn-label { color: rgba(255,255,255,0.9); }
+
+  .ficha-section { margin-bottom: 20px; }
+
+  .ficha-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gris-light);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .ficha-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--gris);
+  }
+
+  .horarios-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .horario-item {
+    background: var(--arena);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .horario-day { font-weight: 600; font-size: 11px; color: var(--gris); }
+  .horario-time { color: var(--tierra); font-weight: 500; }
+
+  .oferta-chip {
+    background: linear-gradient(135deg, var(--tierra-light), var(--tierra));
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .oferta-chip-emoji { font-size: 24px; }
+  .oferta-chip-text { font-size: 12px; font-weight: 600; }
+  .oferta-chip-sub { font-size: 11px; opacity: 0.8; }
+
+  /* ===== SCREEN 3: PANEL COMERCIO ===== */
+  .panel-header {
+    background: var(--cielo);
+    padding: 52px 20px 24px;
+    position: relative;
+  }
+
+  .panel-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 24px;
+    background: var(--blanco);
+    border-radius: 24px 24px 0 0;
+  }
+
+  .panel-greeting {
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .panel-name {
+    font-family: 'Playfair Display', serif;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .panel-plan {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: white;
+    font-weight: 500;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px 20px 8px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 2px 12px var(--sombra);
+    border: 1.5px solid var(--arena-dark);
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--tierra);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--gris-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .stat-trend {
+    font-size: 11px;
+    color: var(--verde);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .panel-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 4px 20px 8px;
+  }
+
+  .panel-action {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 2px 12px var(--sombra);
+    border: 1.5px solid var(--arena-dark);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .panel-action.highlight {
+    background: linear-gradient(135deg, var(--tierra), var(--tierra-light));
+    border-color: transparent;
+    color: white;
+  }
+
+  .panel-action-icon { font-size: 24px; }
+  .panel-action-title { font-size: 13px; font-weight: 600; }
+  .panel-action-sub { font-size: 11px; color: var(--gris-light); }
+  .panel-action.highlight .panel-action-sub { color: rgba(255,255,255,0.75); }
+
+  .upgrade-banner {
+    margin: 4px 20px 16px;
+    background: linear-gradient(135deg, var(--cielo), var(--cielo-light));
+    border-radius: 16px;
+    padding: 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .upgrade-text { flex: 1; }
+  .upgrade-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+  .upgrade-sub { font-size: 11px; opacity: 0.8; }
+  .upgrade-btn {
+    background: white;
+    color: var(--cielo);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    flex-shrink: 0;
+  }
+
+  .notif-item {
+    margin: 0 20px 10px;
+    background: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px var(--sombra);
+    border: 1.5px solid var(--arena-dark);
+  }
+
+  .notif-dot {
+    width: 8px; height: 8px;
+    background: var(--tierra);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .notif-text { font-size: 12px; color: var(--gris); line-height: 1.4; }
+  .notif-text strong { color: #2A2018; }
+  .notif-time { font-size: 10px; color: var(--gris-light); margin-left: auto; flex-shrink: 0; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .phone { animation: fadeUp 0.6s ease both; }
+  .phone:nth-child(2) { animation-delay: 0.15s; }
+  .phone:nth-child(3) { animation-delay: 0.3s; }
+
+  .page-title {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 6px;
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+    width: 375px;
+  }
+</style>
+</head>
+<body>
+<div class="device-frame">
+
+  <!-- PANTALLA 1: HOME / DIRECTORIO -->
+  <div>
+  <div class="page-title">PANTALLA 1 — DIRECTORIO</div>
+  <div class="phone">
+    <div class="screen">
+      <div class="home-header">
+        <div class="app-logo">
+          <div class="logo-icon">🏔️</div>
+          <div class="logo-text">
+            Los Vélez Conecta
+            <span>Comercio local · Almería</span>
+          </div>
+        </div>
+        <div class="home-title">¿Qué buscás<br>hoy en el pueblo?</div>
+        <div class="home-subtitle">87 negocios locales a tu alcance</div>
+      </div>
+
+      <div class="search-wrap">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Buscar comercio, producto...">
+        </div>
+      </div>
+
+      <div class="section-title">Categorías</div>
+      <div class="cats-scroll">
+        <div class="cat-pill active"><span>🍽️</span><span>Restaurantes</span></div>
+        <div class="cat-pill"><span>🛒</span><span>Alimentación</span></div>
+        <div class="cat-pill"><span>🏨</span><span>Alojamiento</span></div>
+        <div class="cat-pill"><span>💈</span><span>Servicios</span></div>
+        <div class="cat-pill"><span>🛠️</span><span>Talleres</span></div>
+        <div class="cat-pill"><span>👗</span><span>Moda</span></div>
+      </div>
+
+      <div class="section-title">Destacados esta semana</div>
+
+      <div class="featured-card">
+        <div class="card-img">
+          <div class="card-img-emoji">🍷</div>
+          <span class="card-badge verde">✦ Destacado</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Bodega El Almendro</div>
+          <div class="card-cat">Restaurantes · Vélez Rubio</div>
+          <div class="card-info">
+            <div class="card-info-item"><span class="open-dot"></span> Abierto ahora</div>
+            <div class="card-info-item">📍 Calle Mayor, 14</div>
+            <div class="card-info-item">☎️ Ver tel.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="featured-card">
+        <div class="card-img tipo2">
+          <div class="card-img-emoji">🛏️</div>
+          <span class="card-badge">✦ Destacado</span>
+        </div>
+        <div class="card-body">
+          <div class="card-name">Casa Rural La Encina</div>
+          <div class="card-cat">Alojamiento · Vélez Blanco</div>
+          <div class="card-info">
+            <div class="card-info-item"><span class="open-dot"></span> Disponible</div>
+            <div class="card-info-item">📍 Carretera A-317</div>
+            <div class="card-info-item">📅 Reservar</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="oferta-banner">
+        <div class="oferta-emoji">🎉</div>
+        <div>
+          <div class="oferta-title">Oferta de temporada</div>
+          <div class="oferta-sub">Supermercado García · 20% dto. en frutas</div>
+        </div>
+      </div>
+
+      <div class="section-title">Otros negocios</div>
+
+      <div class="card-locked">
+        <div class="locked-icon">🔧</div>
+        <div>
+          <div class="locked-name">Taller Mecánico Ruiz</div>
+          <div class="locked-sub">Información no disponible</div>
+        </div>
+        <button class="locked-cta">¿Eres el dueño?</button>
+      </div>
+
+      <div class="card-locked">
+        <div class="locked-icon">💇</div>
+        <div>
+          <div class="locked-name">Peluquería Lola</div>
+          <div class="locked-sub">Información no disponible</div>
+        </div>
+        <button class="locked-cta">¿Eres el dueño?</button>
+      </div>
+
+      <div style="height: 20px;"></div>
+
+      <div class="bottom-nav">
+        <div class="nav-item active">
+          <div class="nav-icon">🏠</div>
+          <div class="nav-label" style="color:var(--tierra)">Inicio</div>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon">🗺️</div>
+          <div class="nav-label">Mapa</div>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon">🏷️</div>
+          <div class="nav-label">Ofertas</div>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon">👤</div>
+          <div class="nav-label">Mi zona</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Vista del vecino / turista</div>
+  </div>
+
+  <!-- PANTALLA 2: FICHA DE COMERCIO -->
+  <div>
+  <div class="page-title">PANTALLA 2 — FICHA COMERCIO</div>
+  <div class="phone">
+    <div class="screen">
+      <div class="ficha-header">
+        <div class="ficha-header-emoji">🍷</div>
+        <div class="ficha-back">←</div>
+        <div class="ficha-badge-wrap">
+          <div class="ficha-verified">✓ Verificado</div>
+        </div>
+      </div>
+
+      <div class="ficha-body">
+        <div class="ficha-name">Bodega El Almendro</div>
+        <div class="ficha-cat-row">
+          <span style="font-size:12px;color:var(--gris-light);text-transform:uppercase;letter-spacing:0.08em;">Restaurante · Bar</span>
+        </div>
+
+        <div class="ficha-actions">
+          <button class="action-btn primary">
+            <span class="action-btn-icon">📞</span>
+            <span class="action-btn-label">Llamar</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-btn-icon">📍</span>
+            <span class="action-btn-label">Cómo llegar</span>
+          </button>
+          <button class="action-btn">
+            <span class="action-btn-icon">💬</span>
+            <span class="action-btn-label">WhatsApp</span>
+          </button>
+        </div>
+
+        <div class="ficha-section">
+          <div class="ficha-section-title">Sobre el negocio</div>
+          <div class="ficha-desc">Bodega familiar con más de 30 años en Vélez Rubio. Especialidad en tapas, vinos de la tierra y cocina casera. Terraza con vistas al castillo.</div>
+        </div>
+
+        <div class="ficha-section">
+          <div class="ficha-section-title">Horarios</div>
+          <div class="horarios-grid">
+            <div class="horario-item">
+              <div class="horario-day">Lun – Vie</div>
+              <div class="horario-time">8:00 – 23:00</div>
+            </div>
+            <div class="horario-item">
+              <div class="horario-day">Sábado</div>
+              <div class="horario-time">10:00 – 24:00</div>
+            </div>
+            <div class="horario-item">
+              <div class="horario-day">Domingo</div>
+              <div class="horario-time">10:00 – 16:00</div>
+            </div>
+            <div class="horario-item" style="background:var(--arena-dark)">
+              <div class="horario-day">Ahora</div>
+              <div class="horario-time" style="color:var(--verde)">✓ Abierto</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ficha-section">
+          <div class="ficha-section-title">Oferta activa</div>
+          <div class="oferta-chip">
+            <div class="oferta-chip-emoji">🍻</div>
+            <div>
+              <div class="oferta-chip-text">Menú del día a 9,50€</div>
+              <div class="oferta-chip-sub">Válido lunes a viernes · Todo marzo</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ficha-section">
+          <div class="ficha-section-title">Ubicación</div>
+          <div style="background:var(--arena);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--gris);">
+            📍 Calle Mayor, 14 · Vélez Rubio, Almería
+          </div>
+        </div>
+
+        <div style="height:16px;"></div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item active">
+          <div class="nav-icon">🏠</div>
+          <div class="nav-label" style="color:var(--tierra)">Inicio</div>
+        </div>
+        <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
+        <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
+        <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-label">Mi zona</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Lo que ve el cliente en cada comercio</div>
+  </div>
+
+  <!-- PANTALLA 3: PANEL DEL COMERCIANTE -->
+  <div>
+  <div class="page-title">PANTALLA 3 — PANEL COMERCIANTE</div>
+  <div class="phone">
+    <div class="screen">
+      <div class="panel-header">
+        <div class="panel-greeting">Bienvenido de vuelta</div>
+        <div class="panel-name">Bodega El Almendro</div>
+        <div class="panel-plan">⭐ Plan Básico · 9€/mes</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">127</div>
+          <div class="stat-label">Visitas este mes</div>
+          <div class="stat-trend">↑ +23% vs marzo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">18</div>
+          <div class="stat-label">Clics en teléfono</div>
+          <div class="stat-trend">↑ +5 esta semana</div>
+        </div>
+      </div>
+
+      <div class="panel-actions-grid">
+        <div class="panel-action highlight">
+          <div class="panel-action-icon">🏷️</div>
+          <div class="panel-action-title">Nueva oferta</div>
+          <div class="panel-action-sub">Publicar descuento</div>
+        </div>
+        <div class="panel-action">
+          <div class="panel-action-icon">🖼️</div>
+          <div class="panel-action-title">Mis fotos</div>
+          <div class="panel-action-sub">3/5 usadas</div>
+        </div>
+        <div class="panel-action">
+          <div class="panel-action-icon">🕐</div>
+          <div class="panel-action-title">Horarios</div>
+          <div class="panel-action-sub">Actualizar</div>
+        </div>
+        <div class="panel-action">
+          <div class="panel-action-icon">📋</div>
+          <div class="panel-action-title">Mi ficha</div>
+          <div class="panel-action-sub">Editar info</div>
+        </div>
+      </div>
+
+      <div class="upgrade-banner">
+        <div class="upgrade-text">
+          <div class="upgrade-title">3 clientes no encontraron tu tel. esta semana</div>
+          <div class="upgrade-sub">Plan Destacado incluye posición preferente</div>
+        </div>
+        <button class="upgrade-btn">Ver plan</button>
+      </div>
+
+      <div class="section-title">Actividad reciente</div>
+
+      <div class="notif-item">
+        <div class="notif-dot"></div>
+        <div class="notif-text"><strong>12 personas</strong> vieron tu oferta de menú hoy</div>
+        <div class="notif-time">Hoy</div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-dot" style="background:var(--verde)"></div>
+        <div class="notif-text"><strong>Nueva reseña</strong> positiva en tu ficha</div>
+        <div class="notif-time">Ayer</div>
+      </div>
+      <div class="notif-item">
+        <div class="notif-dot" style="background:var(--cielo)"></div>
+        <div class="notif-text">Tu ficha apareció en <strong>34 búsquedas</strong> esta semana</div>
+        <div class="notif-time">Lun</div>
+      </div>
+
+      <div style="height:20px;"></div>
+
+      <div class="bottom-nav">
+        <div class="nav-item active">
+          <div class="nav-icon">📊</div>
+          <div class="nav-label" style="color:var(--cielo)">Panel</div>
+        </div>
+        <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
+        <div class="nav-item"><div class="nav-icon">📝</div><div class="nav-label">Mi ficha</div></div>
+        <div class="nav-item"><div class="nav-icon">💬</div><div class="nav-label">Soporte</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Lo que ve el dueño del comercio</div>
+  </div>
+
+</div>
+</body>
+</html>
