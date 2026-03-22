@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Los Vélez Conecta</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -19,1015 +19,456 @@
     --blanco: #FEFAF4;
     --gris: #6B6355;
     --gris-light: #A09880;
-    --sombra: rgba(70,50,20,0.12);
   }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family:'DM Sans',sans-serif; background:var(--blanco); color:#2A2018; min-height:100vh; overflow-x:hidden; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ===== PAGES ===== */
+  .page { display:none; min-height:100vh; flex-direction:column; }
+  .page.active { display:flex; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--blanco);
-    color: #2A2018;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ===== MOBILE FRAME ===== */
-  .device-frame {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #1a0f05 0%, #2d1a08 50%, #1a2a1a 100%);
-    padding: 30px 16px;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-
-  .phone {
-    width: 375px;
-    min-height: 812px;
-    background: var(--blanco);
-    border-radius: 40px;
-    overflow: hidden;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.1);
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  .screen {
-    height: 812px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-  }
-  .screen::-webkit-scrollbar { display: none; }
-
-  .label {
-    color: rgba(255,255,255,0.5);
-    font-size: 11px;
-    text-align: center;
-    margin-top: 12px;
-    font-family: 'DM Sans', sans-serif;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  /* ===== SCREEN 1: HOME ===== */
+  /* ===== HEADER HOME ===== */
   .home-header {
     background: linear-gradient(160deg, var(--tierra-dark) 0%, var(--tierra) 60%, var(--tierra-light) 100%);
-    padding: 52px 24px 32px;
+    padding: 52px 20px 40px;
     position: relative;
     overflow: hidden;
   }
-
-  .home-header::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
   .home-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 30px;
-    background: var(--blanco);
-    border-radius: 30px 30px 0 0;
+    content:''; position:absolute; bottom:0; left:0; right:0;
+    height:28px; background:var(--blanco); border-radius:28px 28px 0 0;
   }
+  .app-logo { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+  .logo-icon { width:36px; height:36px; background:rgba(255,255,255,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .logo-text { font-family:'Playfair Display',serif; color:white; font-size:16px; font-weight:700; line-height:1; }
+  .logo-text span { display:block; font-size:10px; font-family:'DM Sans',sans-serif; font-weight:300; opacity:0.8; letter-spacing:0.1em; text-transform:uppercase; }
+  .home-title { font-family:'Playfair Display',serif; color:white; font-size:28px; font-weight:900; line-height:1.2; margin-bottom:6px; position:relative; z-index:1; }
+  .home-subtitle { color:rgba(255,255,255,0.75); font-size:13px; font-weight:300; position:relative; z-index:1; }
 
-  .app-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
+  /* ===== SEARCH ===== */
+  .search-wrap { padding:20px 20px 0; }
+  .search-bar { background:white; border-radius:14px; padding:12px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 4px 20px rgba(70,50,20,0.12); border:1.5px solid var(--arena-dark); }
+  .search-bar input { border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:14px; color:#2A2018; flex:1; background:transparent; }
+  .search-bar input::placeholder { color:var(--gris-light); }
+
+  /* ===== CATEGORIES ===== */
+  .section-title { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--gris); padding:20px 20px 12px; }
+  .cats-scroll { display:flex; gap:10px; padding:0 20px 4px; overflow-x:auto; scrollbar-width:none; }
+  .cats-scroll::-webkit-scrollbar { display:none; }
+  .cat-pill { flex-shrink:0; background:white; border:1.5px solid var(--arena-dark); border-radius:20px; padding:8px 14px; display:flex; align-items:center; gap:6px; cursor:pointer; transition:all 0.2s; }
+  .cat-pill.active { background:var(--tierra); border-color:var(--tierra); color:white; }
+  .cat-pill span:first-child { font-size:14px; }
+  .cat-pill span:last-child { font-size:12px; font-weight:500; }
+
+  /* ===== CARDS ===== */
+  .cards-container { padding:4px 20px; flex:1; }
+  .no-results { text-align:center; padding:40px 20px; color:var(--gris-light); font-size:14px; }
+
+  .comercio-card {
+    background:white; border-radius:18px; overflow:hidden;
+    box-shadow:0 4px 16px rgba(70,50,20,0.1); border:1.5px solid var(--arena-dark);
+    margin-bottom:14px; cursor:pointer; transition:transform 0.15s;
   }
-
-  .logo-icon {
-    width: 36px; height: 36px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-  }
-
-  .logo-text {
-    font-family: 'Playfair Display', serif;
-    color: white;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1;
-  }
-  .logo-text span {
-    display: block;
-    font-size: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    opacity: 0.8;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .home-title {
-    font-family: 'Playfair Display', serif;
-    color: white;
-    font-size: 28px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 6px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .home-subtitle {
-    color: rgba(255,255,255,0.75);
-    font-size: 13px;
-    font-weight: 300;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Search bar */
-  .search-wrap {
-    padding: 20px 20px 0;
-  }
-
-  .search-bar {
-    background: white;
-    border-radius: 14px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 20px var(--sombra);
-    border: 1.5px solid var(--arena-dark);
-  }
-
-  .search-bar input {
-    border: none; outline: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: #2A2018;
-    flex: 1;
-    background: transparent;
-  }
-
-  .search-bar input::placeholder { color: var(--gris-light); }
-
-  .search-icon { color: var(--tierra); font-size: 16px; }
-
-  /* Categorías */
-  .section-title {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--gris);
-    padding: 20px 20px 12px;
-  }
-
-  .cats-scroll {
-    display: flex;
-    gap: 10px;
-    padding: 0 20px 4px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .cats-scroll::-webkit-scrollbar { display: none; }
-
-  .cat-pill {
-    flex-shrink: 0;
-    background: white;
-    border: 1.5px solid var(--arena-dark);
-    border-radius: 20px;
-    padding: 8px 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .cat-pill.active {
-    background: var(--tierra);
-    border-color: var(--tierra);
-    color: white;
-  }
-
-  .cat-pill span:first-child { font-size: 14px; }
-  .cat-pill span:last-child { font-size: 12px; font-weight: 500; }
-
-  /* Comercios destacados */
-  .featured-card {
-    margin: 4px 20px;
-    background: white;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 4px 16px var(--sombra);
-    border: 1.5px solid var(--arena-dark);
-    margin-bottom: 12px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-
-  .featured-card:active { transform: scale(0.98); }
-
+  .comercio-card:active { transform:scale(0.98); }
   .card-img {
-    height: 130px;
-    background: linear-gradient(135deg, var(--verde) 0%, var(--verde-light) 100%);
-    position: relative;
-    display: flex;
-    align-items: flex-end;
-    padding: 12px;
+    height:110px; position:relative; display:flex; align-items:flex-end; padding:12px;
   }
+  .card-img-emoji { font-size:52px; position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); opacity:0.25; }
+  .card-badge { font-size:10px; font-weight:600; padding:4px 10px; border-radius:20px; letter-spacing:0.05em; text-transform:uppercase; position:relative; z-index:1; }
+  .badge-destacado { background:var(--tierra); color:white; }
+  .badge-basico { background:var(--verde); color:white; }
+  .badge-gratis { background:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.5); color:white; }
+  .card-body { padding:14px; }
+  .card-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:3px; }
+  .card-cat { font-size:11px; color:var(--gris-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+  .card-info { display:flex; gap:12px; font-size:12px; color:var(--gris); flex-wrap:wrap; }
+  .open-dot { width:7px; height:7px; background:#4CAF50; border-radius:50%; display:inline-block; margin-right:3px; }
+  .closed-dot { width:7px; height:7px; background:#e53935; border-radius:50%; display:inline-block; margin-right:3px; }
 
-  .card-img.tipo2 { background: linear-gradient(135deg, var(--cielo) 0%, var(--cielo-light) 100%); }
-  .card-img.tipo3 { background: linear-gradient(135deg, var(--tierra-dark) 0%, var(--tierra) 100%); }
-
-  .card-img-emoji {
-    font-size: 48px;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -60%);
-    opacity: 0.35;
+  /* LOCKED */
+  .locked-card {
+    background:var(--arena); border:1.5px dashed var(--arena-dark);
+    border-radius:18px; margin-bottom:12px; padding:14px;
+    display:flex; align-items:center; gap:12px; opacity:0.75;
   }
+  .locked-icon { width:42px; height:42px; background:var(--arena-dark); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .locked-name { font-size:13px; font-weight:600; color:var(--gris); margin-bottom:2px; }
+  .locked-sub { font-size:11px; color:var(--gris-light); }
+  .locked-cta { margin-left:auto; background:var(--tierra); color:white; border:none; border-radius:8px; padding:7px 10px; font-size:10px; font-weight:600; cursor:pointer; flex-shrink:0; font-family:'DM Sans',sans-serif; }
 
-  .card-badge {
-    background: var(--tierra);
-    color: white;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    position: relative;
-    z-index: 1;
-  }
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav { background:white; border-top:1px solid var(--arena-dark); display:flex; padding:10px 0 20px; position:sticky; bottom:0; }
+  .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; padding:4px 0; }
+  .nav-icon { font-size:20px; }
+  .nav-label { font-size:9px; font-weight:500; color:var(--gris-light); text-transform:uppercase; letter-spacing:0.05em; }
 
-  .card-badge.verde { background: var(--verde); }
-  .card-badge.gratis {
-    background: rgba(255,255,255,0.25);
-    border: 1px solid rgba(255,255,255,0.4);
-  }
+  /* ===== FICHA PAGE ===== */
+  .ficha-header { height:180px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .ficha-header-emoji { font-size:90px; opacity:0.25; }
+  .ficha-back { position:absolute; top:48px; left:16px; width:38px; height:38px; background:rgba(255,255,255,0.25); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; color:white; backdrop-filter:blur(4px); border:none; }
+  .ficha-verified { position:absolute; top:50px; right:16px; background:var(--tierra); color:white; font-size:10px; font-weight:600; padding:5px 10px; border-radius:10px; }
+  .ficha-body { padding:20px; flex:1; overflow-y:auto; }
+  .ficha-name { font-family:'Playfair Display',serif; font-size:24px; font-weight:900; margin-bottom:4px; }
+  .ficha-cat { font-size:12px; color:var(--gris-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px; }
 
-  .card-body { padding: 14px; }
+  .ficha-actions { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
+  .action-btn { background:var(--arena); border:none; border-radius:12px; padding:14px 8px; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:background 0.15s; }
+  .action-btn.primary { background:var(--tierra); color:white; }
+  .action-btn-icon { font-size:22px; }
+  .action-btn-label { font-size:10px; font-weight:600; color:var(--gris); }
+  .action-btn.primary .action-btn-label { color:rgba(255,255,255,0.9); }
 
-  .card-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
+  .ficha-section { margin-bottom:20px; }
+  .ficha-section-title { font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gris-light); font-weight:600; margin-bottom:10px; }
+  .ficha-desc { font-size:13px; line-height:1.7; color:var(--gris); }
 
-  .card-cat {
-    font-size: 11px;
-    color: var(--gris-light);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
-  }
+  .horarios-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .horario-item { background:var(--arena); border-radius:8px; padding:9px 10px; }
+  .horario-day { font-weight:600; font-size:11px; color:var(--gris); }
+  .horario-time { color:var(--tierra); font-weight:500; font-size:12px; margin-top:2px; }
 
-  .card-info {
-    display: flex;
-    gap: 12px;
-    font-size: 12px;
-    color: var(--gris);
-  }
+  .oferta-chip { background:linear-gradient(135deg, var(--tierra-light), var(--tierra)); border-radius:12px; padding:14px; color:white; display:flex; align-items:center; gap:10px; }
+  .oferta-chip-emoji { font-size:26px; }
+  .oferta-chip-title { font-size:13px; font-weight:600; }
+  .oferta-chip-sub { font-size:11px; opacity:0.85; margin-top:2px; }
 
-  .card-info-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+  .ubicacion-box { background:var(--arena); border-radius:12px; padding:13px 15px; font-size:13px; color:var(--gris); }
 
-  .open-dot {
-    width: 7px; height: 7px;
-    background: #4CAF50;
-    border-radius: 50%;
-    display: inline-block;
-  }
+  /* ===== OFERTA BANNER ===== */
+  .oferta-banner { margin:4px 20px 16px; background:linear-gradient(135deg,var(--verde-light),var(--verde)); border-radius:16px; padding:14px 16px; display:flex; align-items:center; gap:12px; color:white; }
+  .oferta-banner-emoji { font-size:26px; }
+  .oferta-banner-title { font-size:13px; font-weight:600; }
+  .oferta-banner-sub { font-size:11px; opacity:0.85; }
 
-  .card-locked {
-    background: var(--arena);
-    border: 1.5px dashed var(--arena-dark);
-    border-radius: 18px;
-    margin: 0 20px 12px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    opacity: 0.7;
-  }
+  /* gradient colors for cards */
+  .grad-verde { background: linear-gradient(135deg, #3D6B4F 0%, #5A9470 100%); }
+  .grad-cielo { background: linear-gradient(135deg, #2C5F7A 0%, #4A8BA8 100%); }
+  .grad-tierra { background: linear-gradient(135deg, #8B3E0A 0%, #C4601A 100%); }
+  .grad-morado { background: linear-gradient(135deg, #5B4A7A 0%, #8B6FA8 100%); }
+  .grad-rosa { background: linear-gradient(135deg, #8B3A5A 0%, #C46080 100%); }
+  .grad-ocre { background: linear-gradient(135deg, #7A6B2C 0%, #A89B4A 100%); }
 
-  .locked-icon {
-    width: 40px; height: 40px;
-    background: var(--arena-dark);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .locked-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--gris);
-    margin-bottom: 2px;
-  }
-
-  .locked-sub {
-    font-size: 11px;
-    color: var(--gris-light);
-  }
-
-  .locked-cta {
-    margin-left: auto;
-    background: var(--tierra);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    flex-shrink: 0;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  /* Oferta banner */
-  .oferta-banner {
-    margin: 4px 20px 16px;
-    background: linear-gradient(135deg, var(--verde-light), var(--verde));
-    border-radius: 16px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: white;
-  }
-
-  .oferta-emoji { font-size: 28px; }
-  .oferta-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
-  .oferta-sub { font-size: 11px; opacity: 0.8; }
-
-  /* Bottom nav */
-  .bottom-nav {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    border-top: 1px solid var(--arena-dark);
-    display: flex;
-    padding: 10px 0 20px;
-  }
-
-  .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    cursor: pointer;
-    padding: 4px 0;
-  }
-
-  .nav-icon { font-size: 20px; }
-  .nav-label { font-size: 9px; font-weight: 500; color: var(--gris-light); text-transform: uppercase; letter-spacing: 0.05em; }
-  .nav-item.active .nav-label { color: var(--tierra); }
-  .nav-item.active .nav-icon { filter: none; }
-
-  /* ===== SCREEN 2: FICHA COMERCIO ===== */
-  .ficha-header {
-    background: linear-gradient(160deg, var(--verde) 0%, var(--verde-light) 100%);
-    height: 200px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .ficha-header-emoji { font-size: 80px; opacity: 0.3; }
-
-  .ficha-back {
-    position: absolute;
-    top: 48px; left: 16px;
-    width: 36px; height: 36px;
-    background: rgba(255,255,255,0.25);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    cursor: pointer;
-    color: white;
-  }
-
-  .ficha-badge-wrap {
-    position: absolute;
-    top: 48px; right: 16px;
-  }
-
-  .ficha-body {
-    padding: 20px;
-    flex: 1;
-  }
-
-  .ficha-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 900;
-    margin-bottom: 4px;
-  }
-
-  .ficha-cat-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .ficha-verified {
-    background: var(--tierra);
-    color: white;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 8px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-
-  .ficha-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .action-btn {
-    background: var(--arena);
-    border: none;
-    border-radius: 12px;
-    padding: 12px 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .action-btn.primary {
-    background: var(--tierra);
-    color: white;
-  }
-
-  .action-btn-icon { font-size: 20px; }
-  .action-btn-label { font-size: 10px; font-weight: 600; color: var(--gris); }
-  .action-btn.primary .action-btn-label { color: rgba(255,255,255,0.9); }
-
-  .ficha-section { margin-bottom: 20px; }
-
-  .ficha-section-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--gris-light);
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-
-  .ficha-desc {
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--gris);
-  }
-
-  .horarios-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-
-  .horario-item {
-    background: var(--arena);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
-  .horario-day { font-weight: 600; font-size: 11px; color: var(--gris); }
-  .horario-time { color: var(--tierra); font-weight: 500; }
-
-  .oferta-chip {
-    background: linear-gradient(135deg, var(--tierra-light), var(--tierra));
-    border-radius: 12px;
-    padding: 12px 14px;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .oferta-chip-emoji { font-size: 24px; }
-  .oferta-chip-text { font-size: 12px; font-weight: 600; }
-  .oferta-chip-sub { font-size: 11px; opacity: 0.8; }
-
-  /* ===== SCREEN 3: PANEL COMERCIO ===== */
-  .panel-header {
-    background: var(--cielo);
-    padding: 52px 20px 24px;
-    position: relative;
-  }
-
-  .panel-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 24px;
-    background: var(--blanco);
-    border-radius: 24px 24px 0 0;
-  }
-
-  .panel-greeting {
-    color: rgba(255,255,255,0.7);
-    font-size: 12px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .panel-name {
-    font-family: 'Playfair Display', serif;
-    color: white;
-    font-size: 22px;
-    font-weight: 700;
-  }
-
-  .panel-plan {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 20px;
-    padding: 4px 12px;
-    margin-top: 8px;
-    font-size: 11px;
-    color: white;
-    font-weight: 500;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 16px 20px 8px;
-  }
-
-  .stat-card {
-    background: white;
-    border-radius: 14px;
-    padding: 14px;
-    box-shadow: 0 2px 12px var(--sombra);
-    border: 1.5px solid var(--arena-dark);
-  }
-
-  .stat-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--tierra);
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: var(--gris-light);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .stat-trend {
-    font-size: 11px;
-    color: var(--verde);
-    font-weight: 600;
-    margin-top: 2px;
-  }
-
-  .panel-actions-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 4px 20px 8px;
-  }
-
-  .panel-action {
-    background: white;
-    border-radius: 14px;
-    padding: 16px;
-    box-shadow: 0 2px 12px var(--sombra);
-    border: 1.5px solid var(--arena-dark);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .panel-action.highlight {
-    background: linear-gradient(135deg, var(--tierra), var(--tierra-light));
-    border-color: transparent;
-    color: white;
-  }
-
-  .panel-action-icon { font-size: 24px; }
-  .panel-action-title { font-size: 13px; font-weight: 600; }
-  .panel-action-sub { font-size: 11px; color: var(--gris-light); }
-  .panel-action.highlight .panel-action-sub { color: rgba(255,255,255,0.75); }
-
-  .upgrade-banner {
-    margin: 4px 20px 16px;
-    background: linear-gradient(135deg, var(--cielo), var(--cielo-light));
-    border-radius: 16px;
-    padding: 16px;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .upgrade-text { flex: 1; }
-  .upgrade-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-  .upgrade-sub { font-size: 11px; opacity: 0.8; }
-  .upgrade-btn {
-    background: white;
-    color: var(--cielo);
-    border: none;
-    border-radius: 10px;
-    padding: 8px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    flex-shrink: 0;
-  }
-
-  .notif-item {
-    margin: 0 20px 10px;
-    background: white;
-    border-radius: 12px;
-    padding: 12px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 2px 8px var(--sombra);
-    border: 1.5px solid var(--arena-dark);
-  }
-
-  .notif-dot {
-    width: 8px; height: 8px;
-    background: var(--tierra);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  .notif-text { font-size: 12px; color: var(--gris); line-height: 1.4; }
-  .notif-text strong { color: #2A2018; }
-  .notif-time { font-size: 10px; color: var(--gris-light); margin-left: auto; flex-shrink: 0; }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .phone { animation: fadeUp 0.6s ease both; }
-  .phone:nth-child(2) { animation-delay: 0.15s; }
-  .phone:nth-child(3) { animation-delay: 0.3s; }
-
-  .page-title {
-    color: white;
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    text-align: center;
-    margin-bottom: 6px;
-    opacity: 0.6;
-    letter-spacing: 0.05em;
-    width: 375px;
-  }
+  .highlight-bar { height:3px; background:var(--tierra); width:40px; border-radius:2px; margin-bottom:16px; }
 </style>
 </head>
 <body>
-<div class="device-frame">
 
-  <!-- PANTALLA 1: HOME / DIRECTORIO -->
-  <div>
-  <div class="page-title">PANTALLA 1 — DIRECTORIO</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="home-header">
-        <div class="app-logo">
-          <div class="logo-icon">🏔️</div>
-          <div class="logo-text">
-            Los Vélez Conecta
-            <span>Comercio local · Almería</span>
-          </div>
-        </div>
-        <div class="home-title">¿Qué buscás<br>hoy en el pueblo?</div>
-        <div class="home-subtitle">87 negocios locales a tu alcance</div>
-      </div>
+<!-- ===== PAGE: HOME ===== -->
+<div class="page active" id="page-home">
+  <div class="home-header">
+    <div class="app-logo">
+      <div class="logo-icon">🏔️</div>
+      <div class="logo-text">Los Vélez Conecta <span>Comercio local · Almería</span></div>
+    </div>
+    <div class="home-title">¿Qué buscás<br>hoy en el pueblo?</div>
+    <div class="home-subtitle" id="subtitle-count">Cargando comercios...</div>
+  </div>
 
-      <div class="search-wrap">
-        <div class="search-bar">
-          <span class="search-icon">🔍</span>
-          <input type="text" placeholder="Buscar comercio, producto...">
-        </div>
-      </div>
-
-      <div class="section-title">Categorías</div>
-      <div class="cats-scroll">
-        <div class="cat-pill active"><span>🍽️</span><span>Restaurantes</span></div>
-        <div class="cat-pill"><span>🛒</span><span>Alimentación</span></div>
-        <div class="cat-pill"><span>🏨</span><span>Alojamiento</span></div>
-        <div class="cat-pill"><span>💈</span><span>Servicios</span></div>
-        <div class="cat-pill"><span>🛠️</span><span>Talleres</span></div>
-        <div class="cat-pill"><span>👗</span><span>Moda</span></div>
-      </div>
-
-      <div class="section-title">Destacados esta semana</div>
-
-      <div class="featured-card">
-        <div class="card-img">
-          <div class="card-img-emoji">🍷</div>
-          <span class="card-badge verde">✦ Destacado</span>
-        </div>
-        <div class="card-body">
-          <div class="card-name">Bodega El Almendro</div>
-          <div class="card-cat">Restaurantes · Vélez Rubio</div>
-          <div class="card-info">
-            <div class="card-info-item"><span class="open-dot"></span> Abierto ahora</div>
-            <div class="card-info-item">📍 Calle Mayor, 14</div>
-            <div class="card-info-item">☎️ Ver tel.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="featured-card">
-        <div class="card-img tipo2">
-          <div class="card-img-emoji">🛏️</div>
-          <span class="card-badge">✦ Destacado</span>
-        </div>
-        <div class="card-body">
-          <div class="card-name">Casa Rural La Encina</div>
-          <div class="card-cat">Alojamiento · Vélez Blanco</div>
-          <div class="card-info">
-            <div class="card-info-item"><span class="open-dot"></span> Disponible</div>
-            <div class="card-info-item">📍 Carretera A-317</div>
-            <div class="card-info-item">📅 Reservar</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="oferta-banner">
-        <div class="oferta-emoji">🎉</div>
-        <div>
-          <div class="oferta-title">Oferta de temporada</div>
-          <div class="oferta-sub">Supermercado García · 20% dto. en frutas</div>
-        </div>
-      </div>
-
-      <div class="section-title">Otros negocios</div>
-
-      <div class="card-locked">
-        <div class="locked-icon">🔧</div>
-        <div>
-          <div class="locked-name">Taller Mecánico Ruiz</div>
-          <div class="locked-sub">Información no disponible</div>
-        </div>
-        <button class="locked-cta">¿Eres el dueño?</button>
-      </div>
-
-      <div class="card-locked">
-        <div class="locked-icon">💇</div>
-        <div>
-          <div class="locked-name">Peluquería Lola</div>
-          <div class="locked-sub">Información no disponible</div>
-        </div>
-        <button class="locked-cta">¿Eres el dueño?</button>
-      </div>
-
-      <div style="height: 20px;"></div>
-
-      <div class="bottom-nav">
-        <div class="nav-item active">
-          <div class="nav-icon">🏠</div>
-          <div class="nav-label" style="color:var(--tierra)">Inicio</div>
-        </div>
-        <div class="nav-item">
-          <div class="nav-icon">🗺️</div>
-          <div class="nav-label">Mapa</div>
-        </div>
-        <div class="nav-item">
-          <div class="nav-icon">🏷️</div>
-          <div class="nav-label">Ofertas</div>
-        </div>
-        <div class="nav-item">
-          <div class="nav-icon">👤</div>
-          <div class="nav-label">Mi zona</div>
-        </div>
-      </div>
+  <div class="search-wrap">
+    <div class="search-bar">
+      <span>🔍</span>
+      <input type="text" id="search-input" placeholder="Buscar comercio, producto...">
     </div>
   </div>
-  <div class="label">Vista del vecino / turista</div>
+
+  <div class="section-title">Categorías</div>
+  <div class="cats-scroll" id="cats-container"></div>
+
+  <div id="featured-section">
+    <div class="section-title">Destacados</div>
   </div>
 
-  <!-- PANTALLA 2: FICHA DE COMERCIO -->
-  <div>
-  <div class="page-title">PANTALLA 2 — FICHA COMERCIO</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="ficha-header">
-        <div class="ficha-header-emoji">🍷</div>
-        <div class="ficha-back">←</div>
-        <div class="ficha-badge-wrap">
-          <div class="ficha-verified">✓ Verificado</div>
-        </div>
-      </div>
+  <div class="cards-container" id="cards-container"></div>
 
-      <div class="ficha-body">
-        <div class="ficha-name">Bodega El Almendro</div>
-        <div class="ficha-cat-row">
-          <span style="font-size:12px;color:var(--gris-light);text-transform:uppercase;letter-spacing:0.08em;">Restaurante · Bar</span>
-        </div>
-
-        <div class="ficha-actions">
-          <button class="action-btn primary">
-            <span class="action-btn-icon">📞</span>
-            <span class="action-btn-label">Llamar</span>
-          </button>
-          <button class="action-btn">
-            <span class="action-btn-icon">📍</span>
-            <span class="action-btn-label">Cómo llegar</span>
-          </button>
-          <button class="action-btn">
-            <span class="action-btn-icon">💬</span>
-            <span class="action-btn-label">WhatsApp</span>
-          </button>
-        </div>
-
-        <div class="ficha-section">
-          <div class="ficha-section-title">Sobre el negocio</div>
-          <div class="ficha-desc">Bodega familiar con más de 30 años en Vélez Rubio. Especialidad en tapas, vinos de la tierra y cocina casera. Terraza con vistas al castillo.</div>
-        </div>
-
-        <div class="ficha-section">
-          <div class="ficha-section-title">Horarios</div>
-          <div class="horarios-grid">
-            <div class="horario-item">
-              <div class="horario-day">Lun – Vie</div>
-              <div class="horario-time">8:00 – 23:00</div>
-            </div>
-            <div class="horario-item">
-              <div class="horario-day">Sábado</div>
-              <div class="horario-time">10:00 – 24:00</div>
-            </div>
-            <div class="horario-item">
-              <div class="horario-day">Domingo</div>
-              <div class="horario-time">10:00 – 16:00</div>
-            </div>
-            <div class="horario-item" style="background:var(--arena-dark)">
-              <div class="horario-day">Ahora</div>
-              <div class="horario-time" style="color:var(--verde)">✓ Abierto</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="ficha-section">
-          <div class="ficha-section-title">Oferta activa</div>
-          <div class="oferta-chip">
-            <div class="oferta-chip-emoji">🍻</div>
-            <div>
-              <div class="oferta-chip-text">Menú del día a 9,50€</div>
-              <div class="oferta-chip-sub">Válido lunes a viernes · Todo marzo</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="ficha-section">
-          <div class="ficha-section-title">Ubicación</div>
-          <div style="background:var(--arena);border-radius:12px;padding:12px 14px;font-size:13px;color:var(--gris);">
-            📍 Calle Mayor, 14 · Vélez Rubio, Almería
-          </div>
-        </div>
-
-        <div style="height:16px;"></div>
-      </div>
-
-      <div class="bottom-nav">
-        <div class="nav-item active">
-          <div class="nav-icon">🏠</div>
-          <div class="nav-label" style="color:var(--tierra)">Inicio</div>
-        </div>
-        <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
-        <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
-        <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-label">Mi zona</div></div>
-      </div>
-    </div>
-  </div>
-  <div class="label">Lo que ve el cliente en cada comercio</div>
+  <div id="locked-section">
+    <div class="section-title">Otros negocios</div>
+    <div id="locked-container"></div>
   </div>
 
-  <!-- PANTALLA 3: PANEL DEL COMERCIANTE -->
-  <div>
-  <div class="page-title">PANTALLA 3 — PANEL COMERCIANTE</div>
-  <div class="phone">
-    <div class="screen">
-      <div class="panel-header">
-        <div class="panel-greeting">Bienvenido de vuelta</div>
-        <div class="panel-name">Bodega El Almendro</div>
-        <div class="panel-plan">⭐ Plan Básico · 9€/mes</div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number">127</div>
-          <div class="stat-label">Visitas este mes</div>
-          <div class="stat-trend">↑ +23% vs marzo</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">18</div>
-          <div class="stat-label">Clics en teléfono</div>
-          <div class="stat-trend">↑ +5 esta semana</div>
-        </div>
-      </div>
-
-      <div class="panel-actions-grid">
-        <div class="panel-action highlight">
-          <div class="panel-action-icon">🏷️</div>
-          <div class="panel-action-title">Nueva oferta</div>
-          <div class="panel-action-sub">Publicar descuento</div>
-        </div>
-        <div class="panel-action">
-          <div class="panel-action-icon">🖼️</div>
-          <div class="panel-action-title">Mis fotos</div>
-          <div class="panel-action-sub">3/5 usadas</div>
-        </div>
-        <div class="panel-action">
-          <div class="panel-action-icon">🕐</div>
-          <div class="panel-action-title">Horarios</div>
-          <div class="panel-action-sub">Actualizar</div>
-        </div>
-        <div class="panel-action">
-          <div class="panel-action-icon">📋</div>
-          <div class="panel-action-title">Mi ficha</div>
-          <div class="panel-action-sub">Editar info</div>
-        </div>
-      </div>
-
-      <div class="upgrade-banner">
-        <div class="upgrade-text">
-          <div class="upgrade-title">3 clientes no encontraron tu tel. esta semana</div>
-          <div class="upgrade-sub">Plan Destacado incluye posición preferente</div>
-        </div>
-        <button class="upgrade-btn">Ver plan</button>
-      </div>
-
-      <div class="section-title">Actividad reciente</div>
-
-      <div class="notif-item">
-        <div class="notif-dot"></div>
-        <div class="notif-text"><strong>12 personas</strong> vieron tu oferta de menú hoy</div>
-        <div class="notif-time">Hoy</div>
-      </div>
-      <div class="notif-item">
-        <div class="notif-dot" style="background:var(--verde)"></div>
-        <div class="notif-text"><strong>Nueva reseña</strong> positiva en tu ficha</div>
-        <div class="notif-time">Ayer</div>
-      </div>
-      <div class="notif-item">
-        <div class="notif-dot" style="background:var(--cielo)"></div>
-        <div class="notif-text">Tu ficha apareció en <strong>34 búsquedas</strong> esta semana</div>
-        <div class="notif-time">Lun</div>
-      </div>
-
-      <div style="height:20px;"></div>
-
-      <div class="bottom-nav">
-        <div class="nav-item active">
-          <div class="nav-icon">📊</div>
-          <div class="nav-label" style="color:var(--cielo)">Panel</div>
-        </div>
-        <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
-        <div class="nav-item"><div class="nav-icon">📝</div><div class="nav-label">Mi ficha</div></div>
-        <div class="nav-item"><div class="nav-icon">💬</div><div class="nav-label">Soporte</div></div>
-      </div>
-    </div>
+  <div style="height:10px;"></div>
+  <div class="bottom-nav">
+    <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label" style="color:var(--tierra)">Inicio</div></div>
+    <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
+    <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
+    <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-label">Mi zona</div></div>
   </div>
-  <div class="label">Lo que ve el dueño del comercio</div>
-  </div>
-
 </div>
+
+<!-- ===== PAGE: FICHA ===== -->
+<div class="page" id="page-ficha">
+  <div class="ficha-header" id="ficha-header">
+    <div class="ficha-header-emoji" id="ficha-emoji"></div>
+    <button class="ficha-back" onclick="goHome()">←</button>
+    <div class="ficha-verified" id="ficha-verified"></div>
+  </div>
+  <div class="ficha-body">
+    <div class="highlight-bar"></div>
+    <div class="ficha-name" id="ficha-name"></div>
+    <div class="ficha-cat" id="ficha-cat"></div>
+    <div class="ficha-actions">
+      <button class="action-btn primary" id="ficha-tel-btn"><div class="action-btn-icon">📞</div><div class="action-btn-label">Llamar</div></button>
+      <button class="action-btn"><div class="action-btn-icon">📍</div><div class="action-btn-label">Cómo llegar</div></button>
+      <button class="action-btn"><div class="action-btn-icon">💬</div><div class="action-btn-label">WhatsApp</div></button>
+    </div>
+    <div class="ficha-section">
+      <div class="ficha-section-title">Sobre el negocio</div>
+      <div class="ficha-desc" id="ficha-desc"></div>
+    </div>
+    <div class="ficha-section">
+      <div class="ficha-section-title">Horarios</div>
+      <div class="horarios-grid" id="ficha-horarios"></div>
+    </div>
+    <div class="ficha-section" id="ficha-oferta-section">
+      <div class="ficha-section-title">Oferta activa</div>
+      <div class="oferta-chip">
+        <div class="oferta-chip-emoji" id="ficha-oferta-emoji"></div>
+        <div>
+          <div class="oferta-chip-title" id="ficha-oferta-title"></div>
+          <div class="oferta-chip-sub" id="ficha-oferta-sub"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ficha-section">
+      <div class="ficha-section-title">Ubicación</div>
+      <div class="ubicacion-box" id="ficha-ubicacion"></div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
+    <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
+    <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
+    <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-label">Mi zona</div></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const comercios = [
+  {
+    id:1, nombre:"Bodega El Almendro", categoria:"Restaurantes", plan:"destacado",
+    emoji:"🍷", grad:"grad-verde", abierto:true,
+    tel:"950 123 456", direccion:"Calle Mayor, 14 · Vélez Rubio",
+    desc:"Bodega familiar con más de 30 años en Vélez Rubio. Especialidad en tapas, vinos de la tierra y cocina tradicional andaluza. Terraza con vistas al castillo árabe.",
+    horarios:[{d:"Lun – Vie",h:"8:00 – 23:00"},{d:"Sábado",h:"10:00 – 24:00"},{d:"Domingo",h:"10:00 – 16:00"},{d:"Ahora",h:"✓ Abierto",open:true}],
+    oferta:{emoji:"🍻", titulo:"Menú del día a 9,50€", sub:"Válido lun–vie · Todo abril"},
+    verified:true
+  },
+  {
+    id:2, nombre:"Casa Rural La Encina", categoria:"Alojamiento", plan:"destacado",
+    emoji:"🏡", grad:"grad-cielo", abierto:true,
+    tel:"950 234 567", direccion:"Carretera A-317, km 4 · Vélez Blanco",
+    desc:"Casa rural con 6 habitaciones en plena naturaleza. Ideal para familias y grupos. Piscina, jardín y vistas al Parque Natural de Sierra María-Los Vélez.",
+    horarios:[{d:"Recepción",h:"9:00 – 21:00"},{d:"Check-in",h:"Desde 15:00"},{d:"Check-out",h:"Hasta 12:00"},{d:"Ahora",h:"✓ Disponible",open:true}],
+    oferta:{emoji:"🌿", titulo:"20% dto. reservas de semana", sub:"Válido abril y mayo"},
+    verified:true
+  },
+  {
+    id:3, nombre:"Supermercado García", categoria:"Alimentación", plan:"basico",
+    emoji:"🛒", grad:"grad-tierra", abierto:true,
+    tel:"950 345 678", direccion:"Avenida de Andalucía, 22 · Vélez Rubio",
+    desc:"Supermercado familiar con más de 20 años sirviendo a los vecinos de Los Vélez. Productos frescos locales, carnicería, frutería y panadería propia.",
+    horarios:[{d:"Lun – Sáb",h:"8:30 – 21:00"},{d:"Domingo",h:"9:00 – 14:00"},{d:"Festivos",h:"9:00 – 14:00"},{d:"Ahora",h:"✓ Abierto",open:true}],
+    oferta:{emoji:"🍊", titulo:"20% en frutas y verduras", sub:"Esta semana solamente"},
+    verified:false
+  },
+  {
+    id:4, nombre:"Farmacia Martínez", categoria:"Servicios", plan:"basico",
+    emoji:"💊", grad:"grad-morado", abierto:false,
+    tel:"950 456 789", direccion:"Plaza de la Constitución, 3 · Vélez Rubio",
+    desc:"Farmacia con servicio de guardia. Asesoramiento farmacéutico, ortopedia, productos de parafarmacia y cosmética natural.",
+    horarios:[{d:"Lun – Vie",h:"9:00 – 14:00"},{d:"Lun – Vie",h:"17:00 – 21:00"},{d:"Sábado",h:"9:00 – 14:00"},{d:"Ahora",h:"✗ Cerrado",open:false}],
+    oferta:null,
+    verified:false
+  },
+  {
+    id:5, nombre:"Restaurante Los Arcos", categoria:"Restaurantes", plan:"basico",
+    emoji:"🍽️", grad:"grad-rosa", abierto:true,
+    tel:"950 567 890", direccion:"Calle Cervantes, 8 · Vélez Rubio",
+    desc:"Cocina casera con productos de temporada y recetas de la abuela. Especialidad en migas, gazpacho serrano y cordero al horno. Terraza interior climatizada.",
+    horarios:[{d:"Mar – Dom",h:"13:00 – 16:30"},{d:"Jue – Dom",h:"20:00 – 23:30"},{d:"Lunes",h:"Cerrado"},{d:"Ahora",h:"✓ Abierto",open:true}],
+    oferta:{emoji:"🥘", titulo:"Menú degustación 18€", sub:"Fines de semana · Reserva previa"},
+    verified:false
+  },
+  {
+    id:6, nombre:"Hotel Castillo de Vélez", categoria:"Alojamiento", plan:"destacado",
+    emoji:"🏰", grad:"grad-ocre", abierto:true,
+    tel:"950 678 901", direccion:"Camino del Castillo, s/n · Vélez Blanco",
+    desc:"Hotel boutique de 12 habitaciones junto al Castillo de Vélez Blanco. Desayuno incluido, spa y vistas panorámicas a la sierra. Enclave único en Andalucía.",
+    horarios:[{d:"Recepción",h:"24 horas"},{d:"Desayuno",h:"8:00 – 10:30"},{d:"Spa",h:"10:00 – 20:00"},{d:"Ahora",h:"✓ Abierto",open:true}],
+    oferta:{emoji:"🛏️", titulo:"Noche + desayuno desde 85€", sub:"Reserva directa · Sin intermediarios"},
+    verified:true
+  }
+];
+
+const locked = [
+  {nombre:"Taller Mecánico Ruiz", emoji:"🔧", cat:"Talleres"},
+  {nombre:"Peluquería Lola", emoji:"💇", cat:"Servicios"},
+  {nombre:"Bar El Rincón", emoji:"🍺", cat:"Restaurantes"},
+  {nombre:"Ferretería López", emoji:"🔩", cat:"Servicios"},
+];
+
+const categorias = ["Todos", "Restaurantes", "Alojamiento", "Alimentación", "Servicios"];
+let catActiva = "Todos";
+let busqueda = "";
+
+// ===== RENDER =====
+function renderCats() {
+  const c = document.getElementById("cats-container");
+  c.innerHTML = categorias.map(cat => `
+    <div class="cat-pill ${cat===catActiva?'active':''}" onclick="selectCat('${cat}')">
+      <span>${catEmoji(cat)}</span><span>${cat}</span>
+    </div>`).join("");
+}
+
+function catEmoji(cat) {
+  return {Todos:"✨",Restaurantes:"🍽️",Alojamiento:"🏨",Alimentación:"🛒",Servicios:"💈"}[cat]||"📍";
+}
+
+function selectCat(cat) {
+  catActiva = cat;
+  renderCats();
+  renderCards();
+}
+
+function renderCards() {
+  let filtered = comercios.filter(c => {
+    const matchCat = catActiva === "Todos" || c.categoria === catActiva;
+    const matchSearch = busqueda === "" ||
+      c.nombre.toLowerCase().includes(busqueda) ||
+      c.categoria.toLowerCase().includes(busqueda) ||
+      c.direccion.toLowerCase().includes(busqueda);
+    return matchCat && matchSearch;
+  });
+
+  // Subtitle
+  const total = catActiva === "Todos" ? comercios.length + locked.length : filtered.length;
+  document.getElementById("subtitle-count").textContent =
+    busqueda ? `${filtered.length} resultado${filtered.length!==1?"s":""} encontrado${filtered.length!==1?"s":""}` :
+    catActiva === "Todos" ? `${comercios.length + locked.length} negocios locales a tu alcance` :
+    `${filtered.length} negocio${filtered.length!==1?"s":""} en ${catActiva}`;
+
+  // Featured
+  const dest = filtered.filter(c => c.plan === "destacado");
+  const featSec = document.getElementById("featured-section");
+  if (dest.length > 0 && busqueda === "") {
+    featSec.style.display = "block";
+  } else {
+    featSec.style.display = "none";
+  }
+
+  // Cards
+  const cc = document.getElementById("cards-container");
+  if (filtered.length === 0) {
+    cc.innerHTML = `<div class="no-results">😕 No encontramos negocios que coincidan.<br>Probá con otro término.</div>`;
+  } else {
+    cc.innerHTML = filtered.map(c => cardHTML(c)).join("");
+  }
+
+  // Locked
+  const lockedSec = document.getElementById("locked-section");
+  const lc = document.getElementById("locked-container");
+  if (busqueda !== "" || catActiva !== "Todos") {
+    lockedSec.style.display = "none";
+  } else {
+    lockedSec.style.display = "block";
+    lc.innerHTML = locked.map(l => `
+      <div class="locked-card">
+        <div class="locked-icon">${l.emoji}</div>
+        <div>
+          <div class="locked-name">${l.nombre}</div>
+          <div class="locked-sub">Información no disponible · ${l.cat}</div>
+        </div>
+        <button class="locked-cta">¿Eres el dueño?</button>
+      </div>`).join("");
+  }
+
+  // Oferta banner
+  const ofertaBanner = document.querySelector(".oferta-banner");
+  if (ofertaBanner) ofertaBanner.remove();
+  const ofertaComercio = filtered.find(c => c.oferta && c.plan === "destacado");
+  if (ofertaComercio && busqueda === "") {
+    const banner = document.createElement("div");
+    banner.className = "oferta-banner";
+    banner.innerHTML = `<div class="oferta-banner-emoji">${ofertaComercio.oferta.emoji}</div><div><div class="oferta-banner-title">${ofertaComercio.oferta.titulo}</div><div class="oferta-banner-sub">${ofertaComercio.nombre} · ${ofertaComercio.oferta.sub}</div></div>`;
+    cc.after(banner);
+  }
+}
+
+function cardHTML(c) {
+  const badgeClass = c.plan === "destacado" ? "badge-destacado" : "badge-basico";
+  const badgeText = c.plan === "destacado" ? "✦ Destacado" : "● Básico";
+  return `
+  <div class="comercio-card" onclick="openFicha(${c.id})">
+    <div class="card-img ${c.grad}">
+      <div class="card-img-emoji">${c.emoji}</div>
+      <span class="card-badge ${badgeClass}">${badgeText}</span>
+    </div>
+    <div class="card-body">
+      <div class="card-name">${c.nombre}</div>
+      <div class="card-cat">${c.categoria}</div>
+      <div class="card-info">
+        <span>${c.abierto ? '<span class="open-dot"></span> Abierto ahora' : '<span class="closed-dot"></span> Cerrado'}</span>
+        <span>📍 ${c.direccion.split('·')[0].trim()}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ===== FICHA =====
+function openFicha(id) {
+  const c = comercios.find(x => x.id === id);
+  if (!c) return;
+
+  document.getElementById("ficha-header").className = "ficha-header " + c.grad;
+  document.getElementById("ficha-emoji").textContent = c.emoji;
+  document.getElementById("ficha-verified").textContent = c.verified ? "✓ Verificado" : "";
+  document.getElementById("ficha-verified").style.display = c.verified ? "block" : "none";
+  document.getElementById("ficha-name").textContent = c.nombre;
+  document.getElementById("ficha-cat").textContent = c.categoria + " · " + c.direccion.split("·")[1]?.trim();
+  document.getElementById("ficha-desc").textContent = c.desc;
+  document.getElementById("ficha-tel-btn").onclick = () => { window.location.href = "tel:" + c.tel.replace(/\s/g,""); };
+  document.getElementById("ficha-ubicacion").innerHTML = "📍 " + c.direccion;
+
+  // Horarios
+  const h = document.getElementById("ficha-horarios");
+  h.innerHTML = c.horarios.map(x => `
+    <div class="horario-item">
+      <div class="horario-day">${x.d}</div>
+      <div class="horario-time" style="color:${x.open===false?'#e53935':x.open?'var(--verde)':'var(--tierra)'}">${x.h}</div>
+    </div>`).join("");
+
+  // Oferta
+  const ofSec = document.getElementById("ficha-oferta-section");
+  if (c.oferta) {
+    ofSec.style.display = "block";
+    document.getElementById("ficha-oferta-emoji").textContent = c.oferta.emoji;
+    document.getElementById("ficha-oferta-title").textContent = c.oferta.titulo;
+    document.getElementById("ficha-oferta-sub").textContent = c.oferta.sub;
+  } else {
+    ofSec.style.display = "none";
+  }
+
+  document.getElementById("page-home").classList.remove("active");
+  document.getElementById("page-ficha").classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function goHome() {
+  document.getElementById("page-ficha").classList.remove("active");
+  document.getElementById("page-home").classList.add("active");
+  window.scrollTo(0,0);
+}
+
+// ===== SEARCH =====
+document.getElementById("search-input").addEventListener("input", function() {
+  busqueda = this.value.toLowerCase().trim();
+  renderCards();
+});
+
+// ===== INIT =====
+renderCats();
+renderCards();
+</script>
 </body>
 </html>
