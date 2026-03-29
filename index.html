@@ -244,62 +244,31 @@
 
 <script>
 // ===== DATA =====
-const comercios = [
-  {
-    id:1, nombre:"Bodega El Almendro", categoria:"Restaurantes", plan:"destacado",
-    emoji:"🍷", grad:"grad-verde", abierto:true,
-    tel:"950 123 456", direccion:"Calle Mayor, 14 · Vélez Rubio",
-    desc:"Bodega familiar con más de 30 años en Vélez Rubio. Especialidad en tapas, vinos de la tierra y cocina tradicional andaluza. Terraza con vistas al castillo árabe.",
-    horarios:[{d:"Lun – Vie",h:"8:00 – 23:00"},{d:"Sábado",h:"10:00 – 24:00"},{d:"Domingo",h:"10:00 – 16:00"},{d:"Ahora",h:"✓ Abierto",open:true}],
-    oferta:{emoji:"🍻", titulo:"Menú del día a 9,50€", sub:"Válido lun–vie · Todo abril"},
-    verified:true
-  },
-  {
-    id:2, nombre:"Casa Rural La Encina", categoria:"Alojamiento", plan:"destacado",
-    emoji:"🏡", grad:"grad-cielo", abierto:true,
-    tel:"950 234 567", direccion:"Carretera A-317, km 4 · Vélez Blanco",
-    desc:"Casa rural con 6 habitaciones en plena naturaleza. Ideal para familias y grupos. Piscina, jardín y vistas al Parque Natural de Sierra María-Los Vélez.",
-    horarios:[{d:"Recepción",h:"9:00 – 21:00"},{d:"Check-in",h:"Desde 15:00"},{d:"Check-out",h:"Hasta 12:00"},{d:"Ahora",h:"✓ Disponible",open:true}],
-    oferta:{emoji:"🌿", titulo:"20% dto. reservas de semana", sub:"Válido abril y mayo"},
-    verified:true
-  },
-  {
-    id:3, nombre:"Supermercado García", categoria:"Alimentación", plan:"basico",
-    emoji:"🛒", grad:"grad-tierra", abierto:true,
-    tel:"950 345 678", direccion:"Avenida de Andalucía, 22 · Vélez Rubio",
-    desc:"Supermercado familiar con más de 20 años sirviendo a los vecinos de Los Vélez. Productos frescos locales, carnicería, frutería y panadería propia.",
-    horarios:[{d:"Lun – Sáb",h:"8:30 – 21:00"},{d:"Domingo",h:"9:00 – 14:00"},{d:"Festivos",h:"9:00 – 14:00"},{d:"Ahora",h:"✓ Abierto",open:true}],
-    oferta:{emoji:"🍊", titulo:"20% en frutas y verduras", sub:"Esta semana solamente"},
-    verified:false
-  },
-  {
-    id:4, nombre:"Farmacia Martínez", categoria:"Servicios", plan:"basico",
-    emoji:"💊", grad:"grad-morado", abierto:false,
-    tel:"950 456 789", direccion:"Plaza de la Constitución, 3 · Vélez Rubio",
-    desc:"Farmacia con servicio de guardia. Asesoramiento farmacéutico, ortopedia, productos de parafarmacia y cosmética natural.",
-    horarios:[{d:"Lun – Vie",h:"9:00 – 14:00"},{d:"Lun – Vie",h:"17:00 – 21:00"},{d:"Sábado",h:"9:00 – 14:00"},{d:"Ahora",h:"✗ Cerrado",open:false}],
-    oferta:null,
-    verified:false
-  },
-  {
-    id:5, nombre:"Restaurante Los Arcos", categoria:"Restaurantes", plan:"basico",
-    emoji:"🍽️", grad:"grad-rosa", abierto:true,
-    tel:"950 567 890", direccion:"Calle Cervantes, 8 · Vélez Rubio",
-    desc:"Cocina casera con productos de temporada y recetas de la abuela. Especialidad en migas, gazpacho serrano y cordero al horno. Terraza interior climatizada.",
-    horarios:[{d:"Mar – Dom",h:"13:00 – 16:30"},{d:"Jue – Dom",h:"20:00 – 23:30"},{d:"Lunes",h:"Cerrado"},{d:"Ahora",h:"✓ Abierto",open:true}],
-    oferta:{emoji:"🥘", titulo:"Menú degustación 18€", sub:"Fines de semana · Reserva previa"},
-    verified:false
-  },
-  {
-    id:6, nombre:"Hotel Castillo de Vélez", categoria:"Alojamiento", plan:"destacado",
-    emoji:"🏰", grad:"grad-ocre", abierto:true,
-    tel:"950 678 901", direccion:"Camino del Castillo, s/n · Vélez Blanco",
-    desc:"Hotel boutique de 12 habitaciones junto al Castillo de Vélez Blanco. Desayuno incluido, spa y vistas panorámicas a la sierra. Enclave único en Andalucía.",
-    horarios:[{d:"Recepción",h:"24 horas"},{d:"Desayuno",h:"8:00 – 10:30"},{d:"Spa",h:"10:00 – 20:00"},{d:"Ahora",h:"✓ Abierto",open:true}],
-    oferta:{emoji:"🛏️", titulo:"Noche + desayuno desde 85€", sub:"Reserva directa · Sin intermediarios"},
-    verified:true
+// ===== SUPABASE CONFIG =====
+const SUPABASE_URL = 'https://twylshbhyknmwfszgozt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_PfJe--RIble_l5bZdN59ZA_aikQtH2j';
+
+let comercios = [];
+
+async function cargarComercios() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/comercios?select=*&activo=eq.true&order=plan.desc`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    const data = await res.json();
+    comercios = data.map(c => ({
+      ...c,
+      desc: c.descripcion
+    }));
+    renderCats();
+    renderCards();
+  } catch (err) {
+    console.error('Error cargando comercios:', err);
   }
-];
+}
 
 const locked = [
   {nombre:"Taller Mecánico Ruiz", emoji:"🔧", cat:"Talleres"},
@@ -467,8 +436,7 @@ document.getElementById("search-input").addEventListener("input", function() {
 });
 
 // ===== INIT =====
-renderCats();
-renderCards();
+cargarComercios();
 </script>
 </body>
 </html>
