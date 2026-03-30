@@ -642,6 +642,8 @@
     <div class="lang-selector">
       <button class="lang-btn active" onclick="setLang('es')">ES</button>
       <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
     </div>
   </div>
 
@@ -880,7 +882,7 @@ let lang = localStorage.getItem('lang') || 'es';
 const i18n = {
   es: {
     eyebrow: 'Comercio local',
-    hero_title: '¿Qué buscás',
+    hero_title: '¿Qué buscas',
     hero_italic: 'hoy en el pueblo?',
     loading: 'Cargando...',
     search_placeholder: 'Buscar comercio, producto...',
@@ -898,7 +900,7 @@ const i18n = {
     closed: 'Cerrado',
     open_now: 'Abierto ahora',
     no_info: 'Sin información',
-    owner_cta: '¿Sos el dueño?',
+    owner_cta: '¿Eres el dueño?',
     no_results: 'Sin resultados para esta búsqueda.',
     call: 'Llamar',
     directions: 'Cómo llegar',
@@ -951,6 +953,80 @@ const i18n = {
     nav_zone: 'My area',
     plan_dest: 'Featured',
     plan_bas: 'Basic',
+  },
+  de: {
+    eyebrow: 'Lokales Gewerbe',
+    hero_title: 'Was suchst du',
+    hero_italic: 'heute im Dorf?',
+    loading: 'Lädt...',
+    search_placeholder: 'Geschäft, Produkt suchen...',
+    cat_all: 'Alle',
+    cat_restaurants: 'Restaurants',
+    cat_lodging: 'Unterkunft',
+    cat_food: 'Lebensmittel',
+    cat_services: 'Dienstleistungen',
+    featured: 'Empfohlen',
+    other_businesses: 'Weitere Betriebe',
+    n_businesses: (n) => `${n} lokale${n!==1?'':'s'} Geschäft${n!==1?'e':''} in der Nähe`,
+    n_in_cat: (n, cat) => `${n} Betrieb${n!==1?'e':''} in ${cat}`,
+    n_results: (n) => `${n} Ergebnis${n!==1?'se':''} gefunden`,
+    open: 'Geöffnet',
+    closed: 'Geschlossen',
+    open_now: 'Jetzt geöffnet',
+    no_info: 'Keine Informationen',
+    owner_cta: 'Sind Sie der Inhaber?',
+    no_results: 'Keine Ergebnisse für diese Suche.',
+    call: 'Anrufen',
+    directions: 'Route',
+    whatsapp: 'WhatsApp',
+    about: 'Über uns',
+    schedule: 'Öffnungszeiten',
+    active_offer: 'Aktuelles Angebot',
+    location: 'Standort',
+    verified: 'Verifiziert',
+    nav_home: 'Start',
+    nav_map: 'Karte',
+    nav_offers: 'Angebote',
+    nav_zone: 'Mein Bereich',
+    plan_dest: 'Empfohlen',
+    plan_bas: 'Standard',
+  },
+  fr: {
+    eyebrow: 'Commerce local',
+    hero_title: 'Que cherchez-vous',
+    hero_italic: 'aujourd\'hui au village\u00a0?',
+    loading: 'Chargement...',
+    search_placeholder: 'Rechercher un commerce, produit...',
+    cat_all: 'Tous',
+    cat_restaurants: 'Restaurants',
+    cat_lodging: 'Hébergement',
+    cat_food: 'Alimentation',
+    cat_services: 'Services',
+    featured: 'En vedette',
+    other_businesses: 'Autres commerces',
+    n_businesses: (n) => `${n} commerce${n!==1?'s':''} local${n!==1?'aux':''} à votre portée`,
+    n_in_cat: (n, cat) => `${n} commerce${n!==1?'s':''} en ${cat}`,
+    n_results: (n) => `${n} résultat${n!==1?'s':''} trouvé${n!==1?'s':''}`,
+    open: 'Ouvert',
+    closed: 'Fermé',
+    open_now: 'Ouvert maintenant',
+    no_info: 'Sans information',
+    owner_cta: 'Êtes-vous le propriétaire\u00a0?',
+    no_results: 'Aucun résultat pour cette recherche.',
+    call: 'Appeler',
+    directions: 'Itinéraire',
+    whatsapp: 'WhatsApp',
+    about: 'À propos',
+    schedule: 'Horaires',
+    active_offer: 'Offre en cours',
+    location: 'Adresse',
+    verified: 'Vérifié',
+    nav_home: 'Accueil',
+    nav_map: 'Carte',
+    nav_offers: 'Offres',
+    nav_zone: 'Ma zone',
+    plan_dest: 'En vedette',
+    plan_bas: 'Standard',
   }
 };
 
@@ -1004,10 +1080,20 @@ function updateStaticText() {
 
 let comercios = [];
 const locked = [
-  {nombre:"Taller Mecánico Ruiz", cat:"Talleres"},
-  {nombre:"Peluquería Lola", cat:"Servicios"},
-  {nombre:"Bar El Rincón", cat:"Restaurantes"},
-  {nombre:"Ferretería López", cat:"Servicios"},
+  {nombre:"Taller Mecánico Ruiz",     cat:"Talleres"},
+  {nombre:"Peluquería Lola",           cat:"Servicios"},
+  {nombre:"Bar El Rincón",             cat:"Restaurantes"},
+  {nombre:"Ferretería López",          cat:"Servicios"},
+  {nombre:"Fontanero · Los Vélez",     cat:"Profesionales"},
+  {nombre:"Cerrajero · Los Vélez",     cat:"Profesionales"},
+  {nombre:"Abogado · Vélez Rubio",     cat:"Profesionales"},
+  {nombre:"Traductor · Los Vélez",     cat:"Profesionales"},
+  {nombre:"Arquitecto · Los Vélez",    cat:"Profesionales"},
+  {nombre:"Profesor de inglés",        cat:"Profesionales"},
+  {nombre:"Profesor de español",       cat:"Profesionales"},
+  {nombre:"Electricista · Los Vélez",  cat:"Profesionales"},
+  {nombre:"Fisioterapeuta · Los Vélez",cat:"Profesionales"},
+  {nombre:"Asesoría fiscal · Los Vélez",cat:"Profesionales"},
 ];
 
 const CAT_KEYS = ['cat_all','cat_restaurants','cat_lodging','cat_food','cat_services'];
