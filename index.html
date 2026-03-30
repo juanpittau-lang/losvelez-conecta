@@ -4,294 +4,909 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Los Vélez Conecta</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --tierra: #C4601A;
-    --tierra-light: #E8834A;
-    --tierra-dark: #8B3E0A;
-    --arena: #F5EDD8;
-    --arena-dark: #E8D9BB;
-    --verde: #3D6B4F;
-    --verde-light: #5A9470;
-    --cielo: #2C5F7A;
-    --cielo-light: #4A8BA8;
-    --blanco: #FEFAF4;
-    --gris: #6B6355;
-    --gris-light: #A09880;
+    --ink: #0F0E0C;
+    --ink-mid: #3A3830;
+    --ink-soft: #7A7670;
+    --ink-faint: #C4C0B8;
+    --surface: #F7F5F1;
+    --surface-2: #EDEAE4;
+    --surface-3: #E2DED6;
+    --white: #FFFFFF;
+    --accent: #C4601A;
+    --accent-soft: #F0E6DC;
+    --accent-dark: #8B3E0A;
+    --green: #2D6A4F;
+    --green-soft: #D8EDDF;
+    --blue: #1A5276;
+    --blue-soft: #D6EAF8;
+    --red-soft: #FDEAEA;
+    --red: #C0392B;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+    --shadow-sm: 0 1px 3px rgba(15,14,12,0.06), 0 1px 2px rgba(15,14,12,0.04);
+    --shadow-md: 0 4px 12px rgba(15,14,12,0.08), 0 2px 4px rgba(15,14,12,0.04);
   }
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-  body { font-family:'DM Sans',sans-serif; background:var(--blanco); color:#2A2018; min-height:100vh; overflow-x:hidden; }
 
-  /* ===== PAGES ===== */
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PAGES ── */
   .page { display:none; min-height:100vh; flex-direction:column; }
   .page.active { display:flex; }
 
-  /* ===== HEADER HOME ===== */
-  .home-header {
-    background: linear-gradient(160deg, var(--tierra-dark) 0%, var(--tierra) 60%, var(--tierra-light) 100%);
-    padding: 52px 20px 40px;
-    position: relative;
-    overflow: hidden;
+  /* ── STATUS BAR ── */
+  .status-bar {
+    height: 44px;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--surface-2);
   }
-  .home-header::after {
-    content:''; position:absolute; bottom:0; left:0; right:0;
-    height:28px; background:var(--blanco); border-radius:28px 28px 0 0;
+  .status-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .app-logo { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
-  .logo-icon { width:36px; height:36px; background:rgba(255,255,255,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
-  .logo-text { font-family:'Playfair Display',serif; color:white; font-size:16px; font-weight:700; line-height:1; }
-  .logo-text span { display:block; font-size:10px; font-family:'DM Sans',sans-serif; font-weight:300; opacity:0.8; letter-spacing:0.1em; text-transform:uppercase; }
-  .home-title { font-family:'Playfair Display',serif; color:white; font-size:28px; font-weight:900; line-height:1.2; margin-bottom:6px; position:relative; z-index:1; }
-  .home-subtitle { color:rgba(255,255,255,0.75); font-size:13px; font-weight:300; position:relative; z-index:1; }
+  .status-logo {
+    width: 24px;
+    height: 24px;
+    background: var(--ink);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .status-logo svg { width:14px; height:14px; }
+  .status-name {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .status-badge {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
 
-  /* ===== SEARCH ===== */
-  .search-wrap { padding:20px 20px 0; }
-  .search-bar { background:white; border-radius:14px; padding:12px 16px; display:flex; align-items:center; gap:10px; box-shadow:0 4px 20px rgba(70,50,20,0.12); border:1.5px solid var(--arena-dark); }
-  .search-bar input { border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:14px; color:#2A2018; flex:1; background:transparent; }
-  .search-bar input::placeholder { color:var(--gris-light); }
+  /* ── HERO ── */
+  .hero {
+    background: var(--white);
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--surface-2);
+  }
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .hero-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
 
-  /* ===== CATEGORIES ===== */
-  .section-title { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--gris); padding:20px 20px 12px; }
-  .cats-scroll { display:flex; gap:10px; padding:0 20px 4px; overflow-x:auto; scrollbar-width:none; }
+  /* ── SEARCH ── */
+  .search-wrap { padding: 14px 16px; background: var(--white); border-bottom: 1px solid var(--surface-2); }
+  .search-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1.5px solid var(--surface-3);
+    border-radius: var(--radius-md);
+    padding: 11px 14px;
+    transition: border-color 0.15s;
+  }
+  .search-inner:focus-within { border-color: var(--ink-faint); }
+  .search-icon { flex-shrink:0; }
+  .search-inner input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: 'Sora', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    width: 100%;
+    font-weight: 400;
+  }
+  .search-inner input::placeholder { color: var(--ink-faint); }
+
+  /* ── CATEGORIES ── */
+  .cats-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--surface-2);
+    padding: 12px 0 12px 16px;
+  }
+  .cats-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-right: 16px;
+  }
   .cats-scroll::-webkit-scrollbar { display:none; }
-  .cat-pill { flex-shrink:0; background:white; border:1.5px solid var(--arena-dark); border-radius:20px; padding:8px 14px; display:flex; align-items:center; gap:6px; cursor:pointer; transition:all 0.2s; }
-  .cat-pill.active { background:var(--tierra); border-color:var(--tierra); color:white; }
-  .cat-pill span:first-child { font-size:14px; }
-  .cat-pill span:last-child { font-size:12px; font-weight:500; }
-
-  /* ===== CARDS ===== */
-  .cards-container { padding:4px 20px; flex:1; }
-  .no-results { text-align:center; padding:40px 20px; color:var(--gris-light); font-size:14px; }
-
-  .comercio-card {
-    background:white; border-radius:18px; overflow:hidden;
-    box-shadow:0 4px 16px rgba(70,50,20,0.1); border:1.5px solid var(--arena-dark);
-    margin-bottom:14px; cursor:pointer; transition:transform 0.15s;
+  .cat-chip {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--surface-3);
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Sora', sans-serif;
   }
-  .comercio-card:active { transform:scale(0.98); }
-  .card-img {
-    height:110px; position:relative; display:flex; align-items:flex-end; padding:12px;
+  .cat-chip .cat-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
   }
-  .card-img-emoji { font-size:52px; position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); opacity:0.25; }
-  .card-badge { font-size:10px; font-weight:600; padding:4px 10px; border-radius:20px; letter-spacing:0.05em; text-transform:uppercase; position:relative; z-index:1; }
-  .badge-destacado { background:var(--tierra); color:white; }
-  .badge-basico { background:var(--verde); color:white; }
-  .badge-gratis { background:rgba(255,255,255,0.3); border:1px solid rgba(255,255,255,0.5); color:white; }
-  .card-body { padding:14px; }
-  .card-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; margin-bottom:3px; }
-  .card-cat { font-size:11px; color:var(--gris-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
-  .card-info { display:flex; gap:12px; font-size:12px; color:var(--gris); flex-wrap:wrap; }
-  .open-dot { width:7px; height:7px; background:#4CAF50; border-radius:50%; display:inline-block; margin-right:3px; }
-  .closed-dot { width:7px; height:7px; background:#e53935; border-radius:50%; display:inline-block; margin-right:3px; }
+  .cat-chip .cat-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-mid);
+    white-space: nowrap;
+  }
+  .cat-chip.active {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .cat-chip.active .cat-label { color: var(--white); }
+  .cat-chip.active svg path, .cat-chip.active svg rect, .cat-chip.active svg circle { stroke: var(--white); }
 
-  /* LOCKED */
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 16px 16px 8px;
+  }
+
+  /* ── CARDS CONTAINER ── */
+  .cards-wrap { padding: 0 16px; flex: 1; }
+  .no-results { text-align:center; padding:40px 20px; color:var(--ink-faint); font-size:13px; }
+
+  /* ── COMERCIO CARD ── */
+  .c-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--surface-2);
+    margin-bottom: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+  .c-card:active { transform: scale(0.985); box-shadow: none; }
+
+  .c-card-inner { display: flex; align-items: stretch; }
+
+  .c-card-accent {
+    width: 4px;
+    flex-shrink: 0;
+    border-radius: 0;
+  }
+
+  .c-card-body {
+    padding: 14px 14px 14px 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .c-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 3px;
+  }
+
+  .c-card-name {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .c-card-plan {
+    flex-shrink: 0;
+    margin-left: 8px;
+    margin-top: 2px;
+  }
+  .plan-badge {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 20px;
+  }
+  .plan-dest { background: var(--ink); color: var(--white); }
+  .plan-bas { background: var(--surface-2); color: var(--ink-soft); }
+
+  .c-card-cat {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+
+  .c-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-open { background: #27AE60; }
+  .dot-closed { background: var(--red); }
+
+  .c-card-oferta {
+    margin-top: 8px;
+    background: var(--accent-soft);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .oferta-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; flex-shrink:0; }
+  .oferta-text { font-size: 11px; color: var(--accent-dark); font-weight: 500; }
+
+  /* ── LOCKED ── */
   .locked-card {
-    background:var(--arena); border:1.5px dashed var(--arena-dark);
-    border-radius:18px; margin-bottom:12px; padding:14px;
-    display:flex; align-items:center; gap:12px; opacity:0.75;
+    background: var(--white);
+    border: 1px solid var(--surface-2);
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-  .locked-icon { width:42px; height:42px; background:var(--arena-dark); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-  .locked-name { font-size:13px; font-weight:600; color:var(--gris); margin-bottom:2px; }
-  .locked-sub { font-size:11px; color:var(--gris-light); }
-  .locked-cta { margin-left:auto; background:var(--tierra); color:white; border:none; border-radius:8px; padding:7px 10px; font-size:10px; font-weight:600; cursor:pointer; flex-shrink:0; font-family:'DM Sans',sans-serif; }
+  .locked-icon-wrap {
+    width: 36px;
+    height: 36px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .locked-name { font-size: 13px; font-weight: 500; color: var(--ink-mid); }
+  .locked-sub { font-size: 11px; color: var(--ink-faint); margin-top: 1px; }
+  .locked-cta {
+    margin-left: auto;
+    background: var(--surface);
+    border: 1.5px solid var(--surface-3);
+    color: var(--ink-mid);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
 
-  /* ===== BOTTOM NAV ===== */
-  .bottom-nav { background:white; border-top:1px solid var(--arena-dark); display:flex; padding:10px 0 20px; position:sticky; bottom:0; }
-  .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; padding:4px 0; }
-  .nav-icon { font-size:20px; }
-  .nav-label { font-size:9px; font-weight:500; color:var(--gris-light); text-transform:uppercase; letter-spacing:0.05em; }
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    background: var(--white);
+    border-top: 1px solid var(--surface-2);
+    display: flex;
+    padding: 10px 0 24px;
+    position: sticky;
+    bottom: 0;
+    z-index: 50;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 2px 0;
+  }
+  .nav-icon-wrap {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background 0.15s;
+  }
+  .nav-item.active .nav-icon-wrap { background: var(--accent-soft); }
+  .nav-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nav-item.active .nav-label { color: var(--accent); }
+  .nav-item.active svg path, .nav-item.active svg rect { stroke: var(--accent); }
 
-  /* ===== FICHA PAGE ===== */
-  .ficha-header { height:180px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .ficha-header-emoji { font-size:90px; opacity:0.25; }
-  .ficha-back { position:absolute; top:48px; left:16px; width:38px; height:38px; background:rgba(255,255,255,0.25); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; cursor:pointer; color:white; backdrop-filter:blur(4px); border:none; }
-  .ficha-verified { position:absolute; top:50px; right:16px; background:var(--tierra); color:white; font-size:10px; font-weight:600; padding:5px 10px; border-radius:10px; }
-  .ficha-body { padding:20px; flex:1; overflow-y:auto; }
-  .ficha-name { font-family:'Playfair Display',serif; font-size:24px; font-weight:900; margin-bottom:4px; }
-  .ficha-cat { font-size:12px; color:var(--gris-light); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:16px; }
+  /* ── FICHA PAGE ── */
+  .ficha-topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--surface-2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .ficha-back-btn {
+    width: 34px;
+    height: 34px;
+    background: var(--surface);
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .ficha-topbar-name {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .ficha-verified-badge {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--green-soft);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 20px;
+  }
 
-  .ficha-actions { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:20px; }
-  .action-btn { background:var(--arena); border:none; border-radius:12px; padding:14px 8px; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:background 0.15s; }
-  .action-btn.primary { background:var(--tierra); color:white; }
-  .action-btn-icon { font-size:22px; }
-  .action-btn-label { font-size:10px; font-weight:600; color:var(--gris); }
-  .action-btn.primary .action-btn-label { color:rgba(255,255,255,0.9); }
+  /* ficha hero band */
+  .ficha-band {
+    height: 6px;
+    width: 100%;
+  }
 
-  .ficha-section { margin-bottom:20px; }
-  .ficha-section-title { font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--gris-light); font-weight:600; margin-bottom:10px; }
-  .ficha-desc { font-size:13px; line-height:1.7; color:var(--gris); }
+  .ficha-header-block {
+    background: var(--white);
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--surface-2);
+  }
+  .ficha-cat-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .ficha-name-big {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
 
-  .horarios-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .horario-item { background:var(--arena); border-radius:8px; padding:9px 10px; }
-  .horario-day { font-weight:600; font-size:11px; color:var(--gris); }
-  .horario-time { color:var(--tierra); font-weight:500; font-size:12px; margin-top:2px; }
+  /* actions row */
+  .ficha-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin: 14px 16px;
+  }
+  .action-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--surface-3);
+    border-radius: var(--radius-md);
+    padding: 14px 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .action-btn.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .action-btn-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .action-btn.primary .action-btn-label { color: rgba(255,255,255,0.8); }
 
-  .oferta-chip { background:linear-gradient(135deg, var(--tierra-light), var(--tierra)); border-radius:12px; padding:14px; color:white; display:flex; align-items:center; gap:10px; }
-  .oferta-chip-emoji { font-size:26px; }
-  .oferta-chip-title { font-size:13px; font-weight:600; }
-  .oferta-chip-sub { font-size:11px; opacity:0.85; margin-top:2px; }
+  /* ficha sections */
+  .ficha-section {
+    padding: 16px;
+    border-bottom: 1px solid var(--surface-2);
+    background: var(--white);
+    margin-bottom: 8px;
+  }
+  .ficha-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .ficha-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-mid);
+    font-weight: 300;
+  }
 
-  .ubicacion-box { background:var(--arena); border-radius:12px; padding:13px 15px; font-size:13px; color:var(--gris); }
+  /* horarios */
+  .horarios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .horario-item {
+    background: var(--surface);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .horario-day { font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .horario-time { font-size: 12px; font-weight: 500; margin-top: 2px; }
 
-  /* ===== OFERTA BANNER ===== */
-  .oferta-banner { margin:4px 20px 16px; background:linear-gradient(135deg,var(--verde-light),var(--verde)); border-radius:16px; padding:14px 16px; display:flex; align-items:center; gap:12px; color:white; }
-  .oferta-banner-emoji { font-size:26px; }
-  .oferta-banner-title { font-size:13px; font-weight:600; }
-  .oferta-banner-sub { font-size:11px; opacity:0.85; }
+  /* oferta ficha */
+  .oferta-block {
+    background: var(--accent-soft);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .oferta-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .oferta-titulo { font-size: 13px; font-weight: 600; color: var(--accent-dark); }
+  .oferta-sub { font-size: 11px; color: var(--accent); margin-top: 2px; }
 
-  /* gradient colors for cards */
-  .grad-verde { background: linear-gradient(135deg, #3D6B4F 0%, #5A9470 100%); }
-  .grad-cielo { background: linear-gradient(135deg, #2C5F7A 0%, #4A8BA8 100%); }
-  .grad-tierra { background: linear-gradient(135deg, #8B3E0A 0%, #C4601A 100%); }
-  .grad-morado { background: linear-gradient(135deg, #5B4A7A 0%, #8B6FA8 100%); }
-  .grad-rosa { background: linear-gradient(135deg, #8B3A5A 0%, #C46080 100%); }
-  .grad-ocre { background: linear-gradient(135deg, #7A6B2C 0%, #A89B4A 100%); }
+  /* ubicacion */
+  .ubicacion-box {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--ink-mid);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-  .highlight-bar { height:3px; background:var(--tierra); width:40px; border-radius:2px; margin-bottom:16px; }
+  /* ── BANNER OFERTA HOME ── */
+  .oferta-banner {
+    margin: 8px 16px 4px;
+    background: var(--green-soft);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ob-icon { width: 32px; height: 32px; background: var(--green); border-radius: 9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ob-title { font-size: 12px; font-weight: 600; color: var(--green); }
+  .ob-sub { font-size: 11px; color: var(--green); opacity: 0.7; margin-top: 1px; }
+
+  /* ── ACCENT COLORS PER CATEGORY ── */
+  .acc-restaurantes { background: #D35400; }
+  .acc-alojamiento { background: #1A5276; }
+  .acc-alimentacion { background: #1E8449; }
+  .acc-servicios { background: #6C3483; }
+  .acc-default { background: var(--ink-faint); }
+
+  /* animations */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(8px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  .c-card { animation: fadeUp 0.25s ease both; }
+  .c-card:nth-child(1) { animation-delay: 0.03s; }
+  .c-card:nth-child(2) { animation-delay: 0.06s; }
+  .c-card:nth-child(3) { animation-delay: 0.09s; }
+  .c-card:nth-child(4) { animation-delay: 0.12s; }
+  .c-card:nth-child(5) { animation-delay: 0.15s; }
+  .c-card:nth-child(6) { animation-delay: 0.18s; }
 </style>
 </head>
 <body>
 
-<!-- ===== PAGE: HOME ===== -->
+<!-- ══════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════ -->
 <div class="page active" id="page-home">
-  <div class="home-header">
-    <div class="app-logo">
-      <div class="logo-icon">🏔️</div>
-      <div class="logo-text">Los Vélez Conecta <span>Comercio local · Almería</span></div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <div class="status-brand">
+      <div class="status-logo">
+        <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 2L12 5V9L7 12L2 9V5L7 2Z" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+          <circle cx="7" cy="7" r="1.5" fill="white"/>
+        </svg>
+      </div>
+      <span class="status-name">Los Vélez Conecta</span>
     </div>
-    <div class="home-title">¿Qué buscás<br>hoy en el pueblo?</div>
-    <div class="home-subtitle" id="subtitle-count">Cargando comercios...</div>
+    <span class="status-badge">Almería · España</span>
   </div>
 
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Comercio local</div>
+    <div class="hero-title">¿Qué buscás<br><em>hoy en el pueblo?</em></div>
+    <div class="hero-sub" id="subtitle-count">Cargando...</div>
+  </div>
+
+  <!-- Search -->
   <div class="search-wrap">
-    <div class="search-bar">
-      <span>🔍</span>
+    <div class="search-inner">
+      <div class="search-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="4.5" stroke="#C4C0B8" stroke-width="1.4"/>
+          <path d="M10.5 10.5L13 13" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
       <input type="text" id="search-input" placeholder="Buscar comercio, producto...">
     </div>
   </div>
 
-  <div class="section-title">Categorías</div>
-  <div class="cats-scroll" id="cats-container"></div>
-
-  <div id="featured-section">
-    <div class="section-title">Destacados</div>
+  <!-- Categories -->
+  <div class="cats-wrap">
+    <div class="cats-scroll" id="cats-container"></div>
   </div>
 
-  <div class="cards-container" id="cards-container"></div>
-
-  <div id="locked-section">
-    <div class="section-title">Otros negocios</div>
-    <div id="locked-container"></div>
+  <!-- Featured label -->
+  <div id="featured-section" style="display:none;">
+    <div class="section-label">Destacados</div>
   </div>
 
-  <div style="height:10px;"></div>
+  <!-- Cards -->
+  <div class="cards-wrap" id="cards-container"></div>
+
+  <!-- Locked section -->
+  <div id="locked-section" style="display:none;">
+    <div class="section-label">Otros negocios</div>
+    <div style="padding: 0 16px 8px;" id="locked-container"></div>
+  </div>
+
+  <div style="height:8px;"></div>
+
+  <!-- Bottom Nav -->
   <div class="bottom-nav">
-    <div class="nav-item"><div class="nav-icon">🏠</div><div class="nav-label" style="color:var(--tierra)">Inicio</div></div>
-    <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
-    <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
-    <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-label">Mi zona</div></div>
+    <div class="nav-item active">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 7.5L9 3L15 7.5V15H11.5V11H6.5V15H3V7.5Z" stroke="#0F0E0C" stroke-width="1.4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="nav-label">Inicio</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="6" stroke="#C4C0B8" stroke-width="1.4"/>
+          <path d="M9 3V9L12 12" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nav-label">Mapa</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 5h12M3 9h8M3 13h5" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="14" cy="11" r="2.5" stroke="#C4C0B8" stroke-width="1.4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Ofertas</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="6.5" r="2.5" stroke="#C4C0B8" stroke-width="1.4"/>
+          <path d="M4 15c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nav-label">Mi zona</span>
+    </div>
   </div>
 </div>
 
-<!-- ===== PAGE: FICHA ===== -->
+<!-- ══════════════════════════════════════
+     PAGE: FICHA
+══════════════════════════════════════ -->
 <div class="page" id="page-ficha">
-  <div class="ficha-header" id="ficha-header">
-    <div class="ficha-header-emoji" id="ficha-emoji"></div>
-    <button class="ficha-back" onclick="goHome()">←</button>
-    <div class="ficha-verified" id="ficha-verified"></div>
-  </div>
-  <div class="ficha-body">
-    <div class="highlight-bar"></div>
-    <div class="ficha-name" id="ficha-name"></div>
-    <div class="ficha-cat" id="ficha-cat"></div>
-    <div class="ficha-actions">
-      <button class="action-btn primary" id="ficha-tel-btn"><div class="action-btn-icon">📞</div><div class="action-btn-label">Llamar</div></button>
-      <button class="action-btn"><div class="action-btn-icon">📍</div><div class="action-btn-label">Cómo llegar</div></button>
-      <button class="action-btn"><div class="action-btn-icon">💬</div><div class="action-btn-label">WhatsApp</div></button>
+
+  <div class="ficha-topbar">
+    <button class="ficha-back-btn" onclick="goHome()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 13L5 8L10 3" stroke="#0F0E0C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <span class="ficha-topbar-name" id="ficha-name"></span>
+    <div class="ficha-verified-badge" id="ficha-verified" style="display:none;">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M2 5L4 7L8 3" stroke="#2D6A4F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Verificado
     </div>
+  </div>
+
+  <!-- Color band -->
+  <div class="ficha-band" id="ficha-band"></div>
+
+  <div class="ficha-header-block">
+    <div class="ficha-cat-label" id="ficha-cat"></div>
+    <div class="ficha-name-big" id="ficha-name-big"></div>
+    <div class="c-card-meta">
+      <div class="meta-pill">
+        <div class="meta-dot" id="ficha-status-dot"></div>
+        <span id="ficha-status-text"></span>
+      </div>
+      <div class="meta-pill">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+          <path d="M5.5 1C3.57 1 2 2.57 2 4.5C2 7.25 5.5 10 5.5 10C5.5 10 9 7.25 9 4.5C9 2.57 7.43 1 5.5 1Z" stroke="#7A7670" stroke-width="1.1"/>
+          <circle cx="5.5" cy="4.5" r="1.2" fill="#7A7670"/>
+        </svg>
+        <span id="ficha-dir"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="ficha-actions">
+    <button class="action-btn primary" id="ficha-tel-btn">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M4 4h3l1.5 3.5-2 1.5c1 2 2.5 3.5 4.5 4.5l1.5-2L16 13v3a1 1 0 01-1 1C7.16 17 3 12.84 3 5a1 1 0 011-1z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      <span class="action-btn-label">Llamar</span>
+    </button>
+    <button class="action-btn">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 3C6.69 3 4 5.69 4 9C4 13.5 10 18 10 18C10 18 16 13.5 16 9C16 5.69 13.31 3 10 3Z" stroke="#3A3830" stroke-width="1.4"/>
+        <circle cx="10" cy="9" r="2" fill="#3A3830"/>
+      </svg>
+      <span class="action-btn-label">Cómo llegar</span>
+    </button>
+    <button class="action-btn">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M17 11.5C17 15 14.5 17 10 17L4 18L5 14C3.5 13 3 11.5 3 9.5C3 6 5.5 3 10 3C14.5 3 17 6 17 9.5V11.5Z" stroke="#3A3830" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      <span class="action-btn-label">WhatsApp</span>
+    </button>
+  </div>
+
+  <!-- Body sections -->
+  <div style="flex:1; overflow-y:auto;">
     <div class="ficha-section">
       <div class="ficha-section-title">Sobre el negocio</div>
       <div class="ficha-desc" id="ficha-desc"></div>
     </div>
+
     <div class="ficha-section">
       <div class="ficha-section-title">Horarios</div>
       <div class="horarios-grid" id="ficha-horarios"></div>
     </div>
-    <div class="ficha-section" id="ficha-oferta-section">
+
+    <div class="ficha-section" id="ficha-oferta-section" style="display:none;">
       <div class="ficha-section-title">Oferta activa</div>
-      <div class="oferta-chip">
-        <div class="oferta-chip-emoji" id="ficha-oferta-emoji"></div>
+      <div class="oferta-block">
+        <div class="oferta-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M3 9L9 3L15 9V15H11V11H7V15H3V9Z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <div>
-          <div class="oferta-chip-title" id="ficha-oferta-title"></div>
-          <div class="oferta-chip-sub" id="ficha-oferta-sub"></div>
+          <div class="oferta-titulo" id="ficha-oferta-title"></div>
+          <div class="oferta-sub" id="ficha-oferta-sub"></div>
         </div>
       </div>
     </div>
+
     <div class="ficha-section">
       <div class="ficha-section-title">Ubicación</div>
-      <div class="ubicacion-box" id="ficha-ubicacion"></div>
+      <div class="ubicacion-box" id="ficha-ubicacion">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1C4.79 1 3 2.79 3 5C3 8 7 13 7 13C7 13 11 8 11 5C11 2.79 9.21 1 7 1Z" stroke="#7A7670" stroke-width="1.2"/>
+          <circle cx="7" cy="5" r="1.5" fill="#7A7670"/>
+        </svg>
+      </div>
     </div>
+
     <div style="height:20px;"></div>
   </div>
+
   <div class="bottom-nav">
-    <div class="nav-item" onclick="goHome()"><div class="nav-icon">🏠</div><div class="nav-label">Inicio</div></div>
-    <div class="nav-item"><div class="nav-icon">🗺️</div><div class="nav-label">Mapa</div></div>
-    <div class="nav-item"><div class="nav-icon">🏷️</div><div class="nav-label">Ofertas</div></div>
-    <div class="nav-item"><div class="nav-icon">👤</div><div class="nav-label">Mi zona</div></div>
+    <div class="nav-item" onclick="goHome()">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 7.5L9 3L15 7.5V15H11.5V11H6.5V15H3V7.5Z" stroke="#C4C0B8" stroke-width="1.4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="nav-label">Inicio</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="9" r="6" stroke="#C4C0B8" stroke-width="1.4"/>
+          <path d="M9 3V9L12 12" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nav-label">Mapa</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M3 5h12M3 9h8M3 13h5" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="14" cy="11" r="2.5" stroke="#C4C0B8" stroke-width="1.4"/>
+        </svg>
+      </div>
+      <span class="nav-label">Ofertas</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <circle cx="9" cy="6.5" r="2.5" stroke="#C4C0B8" stroke-width="1.4"/>
+          <path d="M4 15c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#C4C0B8" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nav-label">Mi zona</span>
+    </div>
   </div>
 </div>
 
 <script>
-// ===== DATA =====
-// ===== SUPABASE CONFIG =====
+// ── SUPABASE CONFIG ──
 const SUPABASE_URL = 'https://twylshbhyknmwfszgozt.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_PfJe--RIble_l5bZdN59ZA_aikQtH2j';
 
 let comercios = [];
-
-async function cargarComercios() {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/comercios?select=*&activo=eq.true&order=plan.desc`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
-      }
-    });
-    const data = await res.json();
-    comercios = data.map(c => ({
-      ...c,
-      desc: c.descripcion
-    }));
-    renderCats();
-    renderCards();
-  } catch (err) {
-    console.error('Error cargando comercios:', err);
-  }
-}
-
 const locked = [
-  {nombre:"Taller Mecánico Ruiz", emoji:"🔧", cat:"Talleres"},
-  {nombre:"Peluquería Lola", emoji:"💇", cat:"Servicios"},
-  {nombre:"Bar El Rincón", emoji:"🍺", cat:"Restaurantes"},
-  {nombre:"Ferretería López", emoji:"🔩", cat:"Servicios"},
+  {nombre:"Taller Mecánico Ruiz", cat:"Talleres"},
+  {nombre:"Peluquería Lola", cat:"Servicios"},
+  {nombre:"Bar El Rincón", cat:"Restaurantes"},
+  {nombre:"Ferretería López", cat:"Servicios"},
 ];
 
-const categorias = ["Todos", "Restaurantes", "Alojamiento", "Alimentación", "Servicios"];
+const categorias = ["Todos","Restaurantes","Alojamiento","Alimentación","Servicios"];
 let catActiva = "Todos";
 let busqueda = "";
 
-// ===== RENDER =====
-function renderCats() {
-  const c = document.getElementById("cats-container");
-  c.innerHTML = categorias.map(cat => `
-    <div class="cat-pill ${cat===catActiva?'active':''}" onclick="selectCat('${cat}')">
-      <span>${catEmoji(cat)}</span><span>${cat}</span>
-    </div>`).join("");
+// Category icons (SVG)
+function catIcon(cat, active) {
+  const col = active ? '#FFFFFF' : '#7A7670';
+  const icons = {
+    Todos: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="4" cy="4" r="1.8" stroke="${col}" stroke-width="1.2"/><circle cx="10" cy="4" r="1.8" stroke="${col}" stroke-width="1.2"/><circle cx="4" cy="10" r="1.8" stroke="${col}" stroke-width="1.2"/><circle cx="10" cy="10" r="1.8" stroke="${col}" stroke-width="1.2"/></svg>`,
+    Restaurantes: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2V6C5 7.1 5.9 8 7 8V12M7 8V12M9 2V5M9 5C9 6.1 8.1 7 7 7M9 5H10" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+    Alojamiento: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 6L7 2L12 6V12H9V9H5V12H2V6Z" stroke="${col}" stroke-width="1.2" stroke-linejoin="round"/></svg>`,
+    Alimentación: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3h8l-1 7H4L3 3Z" stroke="${col}" stroke-width="1.2" stroke-linejoin="round"/><path d="M2 3h10" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/><path d="M7 11v2" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+    Servicios: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="${col}" stroke-width="1.2"/><path d="M7 4.5V7L9 9" stroke="${col}" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+  };
+  return icons[cat] || icons.Todos;
 }
 
-function catEmoji(cat) {
-  return {Todos:"✨",Restaurantes:"🍽️",Alojamiento:"🏨",Alimentación:"🛒",Servicios:"💈"}[cat]||"📍";
+function accentClass(cat) {
+  return {
+    Restaurantes: 'acc-restaurantes',
+    Alojamiento: 'acc-alojamiento',
+    Alimentación: 'acc-alimentacion',
+    Servicios: 'acc-servicios',
+  }[cat] || 'acc-default';
+}
+
+function accentColor(cat) {
+  return {
+    Restaurantes: '#D35400',
+    Alojamiento: '#1A5276',
+    Alimentación: '#1E8449',
+    Servicios: '#6C3483',
+  }[cat] || '#7A7670';
+}
+
+// ── SUPABASE FETCH ──
+async function cargarComercios() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/comercios?select=*&activo=eq.true&order=plan.desc`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    comercios = data.map(c => ({ ...c, desc: c.descripcion }));
+    renderCats();
+    renderCards();
+  } catch(err) {
+    console.error('Error:', err);
+  }
+}
+
+// ── RENDER CATS ──
+function renderCats() {
+  document.getElementById('cats-container').innerHTML = categorias.map(cat => `
+    <div class="cat-chip ${cat===catActiva?'active':''}" onclick="selectCat('${cat}')">
+      ${catIcon(cat, cat===catActiva)}
+      <span class="cat-label">${cat}</span>
+    </div>`).join('');
 }
 
 function selectCat(cat) {
@@ -300,142 +915,187 @@ function selectCat(cat) {
   renderCards();
 }
 
+// ── RENDER CARDS ──
 function renderCards() {
   let filtered = comercios.filter(c => {
-    const matchCat = catActiva === "Todos" || c.categoria === catActiva;
-    const matchSearch = busqueda === "" ||
+    const matchCat = catActiva === 'Todos' || c.categoria === catActiva;
+    const matchSearch = busqueda === '' ||
       c.nombre.toLowerCase().includes(busqueda) ||
       c.categoria.toLowerCase().includes(busqueda) ||
-      c.direccion.toLowerCase().includes(busqueda);
+      (c.direccion||'').toLowerCase().includes(busqueda);
     return matchCat && matchSearch;
   });
 
   // Subtitle
-  const total = catActiva === "Todos" ? comercios.length + locked.length : filtered.length;
-  document.getElementById("subtitle-count").textContent =
-    busqueda ? `${filtered.length} resultado${filtered.length!==1?"s":""} encontrado${filtered.length!==1?"s":""}` :
-    catActiva === "Todos" ? `${comercios.length + locked.length} negocios locales a tu alcance` :
-    `${filtered.length} negocio${filtered.length!==1?"s":""} en ${catActiva}`;
+  document.getElementById('subtitle-count').textContent =
+    busqueda ? `${filtered.length} resultado${filtered.length!==1?'s':''} encontrado${filtered.length!==1?'s':''}` :
+    catActiva === 'Todos' ? `${comercios.length + locked.length} negocios locales a tu alcance` :
+    `${filtered.length} negocio${filtered.length!==1?'s':''} en ${catActiva}`;
 
   // Featured
-  const dest = filtered.filter(c => c.plan === "destacado");
-  const featSec = document.getElementById("featured-section");
-  if (dest.length > 0 && busqueda === "") {
-    featSec.style.display = "block";
-  } else {
-    featSec.style.display = "none";
-  }
+  const dest = filtered.filter(c => c.plan === 'destacado');
+  const featSec = document.getElementById('featured-section');
+  featSec.style.display = (dest.length > 0 && busqueda === '') ? 'block' : 'none';
 
   // Cards
-  const cc = document.getElementById("cards-container");
+  const cc = document.getElementById('cards-container');
   if (filtered.length === 0) {
-    cc.innerHTML = `<div class="no-results">😕 No encontramos negocios que coincidan.<br>Probá con otro término.</div>`;
+    cc.innerHTML = `<div class="no-results">Sin resultados para esta búsqueda.</div>`;
   } else {
-    cc.innerHTML = filtered.map(c => cardHTML(c)).join("");
+    cc.innerHTML = filtered.map(c => cardHTML(c)).join('');
   }
 
   // Locked
-  const lockedSec = document.getElementById("locked-section");
-  const lc = document.getElementById("locked-container");
-  if (busqueda !== "" || catActiva !== "Todos") {
-    lockedSec.style.display = "none";
+  const lockedSec = document.getElementById('locked-section');
+  const lc = document.getElementById('locked-container');
+  if (busqueda !== '' || catActiva !== 'Todos') {
+    lockedSec.style.display = 'none';
   } else {
-    lockedSec.style.display = "block";
+    lockedSec.style.display = 'block';
     lc.innerHTML = locked.map(l => `
       <div class="locked-card">
-        <div class="locked-icon">${l.emoji}</div>
+        <div class="locked-icon-wrap">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="4" y="7" width="8" height="7" rx="1.5" stroke="#C4C0B8" stroke-width="1.3"/>
+            <path d="M5.5 7V5.5C5.5 3.57 10.5 3.57 10.5 5.5V7" stroke="#C4C0B8" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div>
           <div class="locked-name">${l.nombre}</div>
-          <div class="locked-sub">Información no disponible · ${l.cat}</div>
+          <div class="locked-sub">Sin información · ${l.cat}</div>
         </div>
-        <button class="locked-cta">¿Eres el dueño?</button>
-      </div>`).join("");
+        <button class="locked-cta">¿Sos el dueño?</button>
+      </div>`).join('');
   }
 
   // Oferta banner
-  const ofertaBanner = document.querySelector(".oferta-banner");
-  if (ofertaBanner) ofertaBanner.remove();
-  const ofertaComercio = filtered.find(c => c.oferta && c.plan === "destacado");
-  if (ofertaComercio && busqueda === "") {
-    const banner = document.createElement("div");
-    banner.className = "oferta-banner";
-    banner.innerHTML = `<div class="oferta-banner-emoji">${ofertaComercio.oferta.emoji}</div><div><div class="oferta-banner-title">${ofertaComercio.oferta.titulo}</div><div class="oferta-banner-sub">${ofertaComercio.nombre} · ${ofertaComercio.oferta.sub}</div></div>`;
-    cc.after(banner);
+  const prev = document.querySelector('.oferta-banner');
+  if (prev) prev.remove();
+  const ofertaC = filtered.find(c => c.oferta && c.plan === 'destacado');
+  if (ofertaC && busqueda === '') {
+    const oferta = typeof ofertaC.oferta === 'string' ? JSON.parse(ofertaC.oferta) : ofertaC.oferta;
+    if (oferta) {
+      const banner = document.createElement('div');
+      banner.className = 'oferta-banner';
+      banner.innerHTML = `
+        <div class="ob-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8L8 3L13 8V13H9.5V10H6.5V13H3V8Z" stroke="white" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ob-title">${oferta.titulo}</div>
+          <div class="ob-sub">${ofertaC.nombre} · ${oferta.sub}</div>
+        </div>`;
+      cc.after(banner);
+    }
   }
 }
 
 function cardHTML(c) {
-  const badgeClass = c.plan === "destacado" ? "badge-destacado" : "badge-basico";
-  const badgeText = c.plan === "destacado" ? "✦ Destacado" : "● Básico";
+  const oferta = c.oferta ? (typeof c.oferta === 'string' ? JSON.parse(c.oferta) : c.oferta) : null;
+  const isOpen = c.abierto;
+  const dir = (c.direccion||'').split('·')[0].trim();
   return `
-  <div class="comercio-card" onclick="openFicha(${c.id})">
-    <div class="card-img ${c.grad}">
-      <div class="card-img-emoji">${c.emoji}</div>
-      <span class="card-badge ${badgeClass}">${badgeText}</span>
-    </div>
-    <div class="card-body">
-      <div class="card-name">${c.nombre}</div>
-      <div class="card-cat">${c.categoria}</div>
-      <div class="card-info">
-        <span>${c.abierto ? '<span class="open-dot"></span> Abierto ahora' : '<span class="closed-dot"></span> Cerrado'}</span>
-        <span>📍 ${c.direccion.split('·')[0].trim()}</span>
+  <div class="c-card" onclick="openFicha(${c.id})">
+    <div class="c-card-inner">
+      <div class="c-card-accent ${accentClass(c.categoria)}"></div>
+      <div class="c-card-body">
+        <div class="c-card-top">
+          <div class="c-card-name">${c.nombre}</div>
+          <div class="c-card-plan">
+            <span class="plan-badge ${c.plan==='destacado'?'plan-dest':'plan-bas'}">${c.plan==='destacado'?'Destacado':'Básico'}</span>
+          </div>
+        </div>
+        <div class="c-card-cat">${c.categoria}</div>
+        <div class="c-card-meta">
+          <div class="meta-pill">
+            <div class="meta-dot ${isOpen?'dot-open':'dot-closed'}"></div>
+            <span>${isOpen?'Abierto':'Cerrado'}</span>
+          </div>
+          <div class="meta-pill">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M5 1C3.34 1 2 2.34 2 4C2 6.5 5 9 5 9C5 9 8 6.5 8 4C8 2.34 6.66 1 5 1Z" stroke="#7A7670" stroke-width="1"/>
+              <circle cx="5" cy="4" r="1.1" fill="#7A7670"/>
+            </svg>
+            <span>${dir}</span>
+          </div>
+        </div>
+        ${oferta ? `
+        <div class="c-card-oferta">
+          <div class="oferta-dot"></div>
+          <span class="oferta-text">${oferta.titulo}</span>
+        </div>` : ''}
       </div>
     </div>
   </div>`;
 }
 
-// ===== FICHA =====
+// ── FICHA ──
 function openFicha(id) {
   const c = comercios.find(x => x.id === id);
   if (!c) return;
 
-  document.getElementById("ficha-header").className = "ficha-header " + c.grad;
-  document.getElementById("ficha-emoji").textContent = c.emoji;
-  document.getElementById("ficha-verified").textContent = c.verified ? "✓ Verificado" : "";
-  document.getElementById("ficha-verified").style.display = c.verified ? "block" : "none";
-  document.getElementById("ficha-name").textContent = c.nombre;
-  document.getElementById("ficha-cat").textContent = c.categoria + " · " + c.direccion.split("·")[1]?.trim();
-  document.getElementById("ficha-desc").textContent = c.desc;
-  document.getElementById("ficha-tel-btn").onclick = () => { window.location.href = "tel:" + c.tel.replace(/\s/g,""); };
-  document.getElementById("ficha-ubicacion").innerHTML = "📍 " + c.direccion;
+  const oferta = c.oferta ? (typeof c.oferta === 'string' ? JSON.parse(c.oferta) : c.oferta) : null;
+  const horarios = c.horarios ? (typeof c.horarios === 'string' ? JSON.parse(c.horarios) : c.horarios) : [];
+  const col = accentColor(c.categoria);
+
+  document.getElementById('ficha-band').style.background = col;
+  document.getElementById('ficha-name').textContent = c.nombre;
+  document.getElementById('ficha-name-big').textContent = c.nombre;
+  document.getElementById('ficha-cat').textContent = c.categoria;
+
+  const vb = document.getElementById('ficha-verified');
+  vb.style.display = c.verified ? 'flex' : 'none';
+
+  const dot = document.getElementById('ficha-status-dot');
+  dot.className = `meta-dot ${c.abierto?'dot-open':'dot-closed'}`;
+  document.getElementById('ficha-status-text').textContent = c.abierto ? 'Abierto ahora' : 'Cerrado';
+  document.getElementById('ficha-dir').textContent = (c.direccion||'').split('·')[0].trim();
+  document.getElementById('ficha-desc').textContent = c.desc || c.descripcion || '';
+  document.getElementById('ficha-tel-btn').onclick = () => { window.location.href = 'tel:' + (c.tel||'').replace(/\s/g,''); };
+  document.getElementById('ficha-ubicacion').innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M7 1C4.79 1 3 2.79 3 5C3 8 7 13 7 13C7 13 11 8 11 5C11 2.79 9.21 1 7 1Z" stroke="#7A7670" stroke-width="1.2"/>
+      <circle cx="7" cy="5" r="1.5" fill="#7A7670"/>
+    </svg>
+    ${c.direccion || ''}`;
 
   // Horarios
-  const h = document.getElementById("ficha-horarios");
-  h.innerHTML = c.horarios.map(x => `
+  document.getElementById('ficha-horarios').innerHTML = horarios.map(x => `
     <div class="horario-item">
       <div class="horario-day">${x.d}</div>
-      <div class="horario-time" style="color:${x.open===false?'#e53935':x.open?'var(--verde)':'var(--tierra)'}">${x.h}</div>
-    </div>`).join("");
+      <div class="horario-time" style="color:${x.open===false?'#C0392B':x.open?'#2D6A4F':col}">${x.h}</div>
+    </div>`).join('');
 
   // Oferta
-  const ofSec = document.getElementById("ficha-oferta-section");
-  if (c.oferta) {
-    ofSec.style.display = "block";
-    document.getElementById("ficha-oferta-emoji").textContent = c.oferta.emoji;
-    document.getElementById("ficha-oferta-title").textContent = c.oferta.titulo;
-    document.getElementById("ficha-oferta-sub").textContent = c.oferta.sub;
+  const ofSec = document.getElementById('ficha-oferta-section');
+  if (oferta) {
+    ofSec.style.display = 'block';
+    document.getElementById('ficha-oferta-title').textContent = oferta.titulo;
+    document.getElementById('ficha-oferta-sub').textContent = oferta.sub;
   } else {
-    ofSec.style.display = "none";
+    ofSec.style.display = 'none';
   }
 
-  document.getElementById("page-home").classList.remove("active");
-  document.getElementById("page-ficha").classList.add("active");
+  document.getElementById('page-home').classList.remove('active');
+  document.getElementById('page-ficha').classList.add('active');
   window.scrollTo(0,0);
 }
 
 function goHome() {
-  document.getElementById("page-ficha").classList.remove("active");
-  document.getElementById("page-home").classList.add("active");
+  document.getElementById('page-ficha').classList.remove('active');
+  document.getElementById('page-home').classList.add('active');
   window.scrollTo(0,0);
 }
 
-// ===== SEARCH =====
-document.getElementById("search-input").addEventListener("input", function() {
+// Search
+document.getElementById('search-input').addEventListener('input', function() {
   busqueda = this.value.toLowerCase().trim();
   renderCards();
 });
 
-// ===== INIT =====
+// Init
 cargarComercios();
 </script>
 </body>
