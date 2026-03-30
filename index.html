@@ -246,7 +246,7 @@
 
   .c-card-name {
     font-family: 'Fraunces', serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: var(--ink);
     letter-spacing: -0.01em;
@@ -270,7 +270,7 @@
   .plan-bas { background: var(--surface-2); color: var(--ink-soft); }
 
   .c-card-cat {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -289,7 +289,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 11px;
+    font-size: 13px;
     color: var(--ink-soft);
     font-weight: 400;
   }
@@ -312,7 +312,7 @@
     gap: 6px;
   }
   .oferta-dot { width: 5px; height: 5px; background: var(--accent); border-radius: 50%; flex-shrink:0; }
-  .oferta-text { font-size: 11px; color: var(--accent-dark); font-weight: 500; }
+  .oferta-text { font-size: 12px; color: var(--accent-dark); font-weight: 500; }
 
   /* ── LOCKED ── */
   .locked-card {
@@ -335,8 +335,8 @@
     justify-content: center;
     flex-shrink: 0;
   }
-  .locked-name { font-size: 13px; font-weight: 500; color: var(--ink-mid); }
-  .locked-sub { font-size: 11px; color: var(--ink-faint); margin-top: 1px; }
+  .locked-name { font-size: 14px; font-weight: 500; color: var(--ink-mid); }
+  .locked-sub { font-size: 12px; color: var(--ink-faint); margin-top: 1px; }
   .locked-cta {
     margin-left: auto;
     background: var(--surface);
@@ -384,12 +384,13 @@
   .nav-label {
     font-size: 9px;
     font-weight: 500;
-    color: var(--ink-faint);
+    color: var(--ink-mid);
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
   .nav-item.active .nav-label { color: var(--accent); }
   .nav-item.active svg path, .nav-item.active svg rect { stroke: var(--accent); }
+  .nav-item:not(.active) svg path, .nav-item:not(.active) svg rect, .nav-item:not(.active) svg circle { stroke: var(--ink-mid); }
 
   /* ── FICHA PAGE ── */
   .ficha-topbar {
@@ -578,6 +579,34 @@
   .acc-servicios { background: #6C3483; }
   .acc-default { background: var(--ink-faint); }
 
+  /* ── LANG SELECTOR ── */
+  .lang-selector {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    background: var(--surface-2);
+    border-radius: 20px;
+    padding: 3px;
+  }
+  .lang-btn {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .lang-btn.active {
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgba(15,14,12,0.1);
+  }
+
   /* animations */
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(8px); }
@@ -610,7 +639,10 @@
       </div>
       <span class="status-name">Los Vélez Conecta</span>
     </div>
-    <span class="status-badge">Almería · España</span>
+    <div class="lang-selector">
+      <button class="lang-btn active" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
   <!-- Hero -->
@@ -842,6 +874,134 @@
 const SUPABASE_URL = 'https://twylshbhyknmwfszgozt.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_PfJe--RIble_l5bZdN59ZA_aikQtH2j';
 
+// ── IDIOMAS ──
+let lang = localStorage.getItem('lang') || 'es';
+
+const i18n = {
+  es: {
+    eyebrow: 'Comercio local',
+    hero_title: '¿Qué buscás',
+    hero_italic: 'hoy en el pueblo?',
+    loading: 'Cargando...',
+    search_placeholder: 'Buscar comercio, producto...',
+    cat_all: 'Todos',
+    cat_restaurants: 'Restaurantes',
+    cat_lodging: 'Alojamiento',
+    cat_food: 'Alimentación',
+    cat_services: 'Servicios',
+    featured: 'Destacados',
+    other_businesses: 'Otros negocios',
+    n_businesses: (n) => `${n} negocio${n!==1?'s':''} locales a tu alcance`,
+    n_in_cat: (n, cat) => `${n} negocio${n!==1?'s':''} en ${cat}`,
+    n_results: (n) => `${n} resultado${n!==1?'s':''} encontrado${n!==1?'s':''}`,
+    open: 'Abierto',
+    closed: 'Cerrado',
+    open_now: 'Abierto ahora',
+    no_info: 'Sin información',
+    owner_cta: '¿Sos el dueño?',
+    no_results: 'Sin resultados para esta búsqueda.',
+    call: 'Llamar',
+    directions: 'Cómo llegar',
+    whatsapp: 'WhatsApp',
+    about: 'Sobre el negocio',
+    schedule: 'Horarios',
+    active_offer: 'Oferta activa',
+    location: 'Ubicación',
+    verified: 'Verificado',
+    nav_home: 'Inicio',
+    nav_map: 'Mapa',
+    nav_offers: 'Ofertas',
+    nav_zone: 'Mi zona',
+    plan_dest: 'Destacado',
+    plan_bas: 'Básico',
+  },
+  en: {
+    eyebrow: 'Local business',
+    hero_title: 'What are you',
+    hero_italic: 'looking for today?',
+    loading: 'Loading...',
+    search_placeholder: 'Search business, product...',
+    cat_all: 'All',
+    cat_restaurants: 'Restaurants',
+    cat_lodging: 'Lodging',
+    cat_food: 'Food',
+    cat_services: 'Services',
+    featured: 'Featured',
+    other_businesses: 'Other businesses',
+    n_businesses: (n) => `${n} local business${n!==1?'es':''} near you`,
+    n_in_cat: (n, cat) => `${n} business${n!==1?'es':''} in ${cat}`,
+    n_results: (n) => `${n} result${n!==1?'s':''} found`,
+    open: 'Open',
+    closed: 'Closed',
+    open_now: 'Open now',
+    no_info: 'No information',
+    owner_cta: 'Are you the owner?',
+    no_results: 'No results for this search.',
+    call: 'Call',
+    directions: 'Directions',
+    whatsapp: 'WhatsApp',
+    about: 'About',
+    schedule: 'Opening hours',
+    active_offer: 'Active offer',
+    location: 'Location',
+    verified: 'Verified',
+    nav_home: 'Home',
+    nav_map: 'Map',
+    nav_offers: 'Offers',
+    nav_zone: 'My area',
+    plan_dest: 'Featured',
+    plan_bas: 'Basic',
+  }
+};
+
+function t(key, ...args) {
+  const val = i18n[lang][key];
+  return typeof val === 'function' ? val(...args) : val;
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  localStorage.setItem('lang', lang);
+  // Update lang buttons
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+  // Update static UI text
+  updateStaticText();
+  // Re-render dynamic content
+  renderCats();
+  renderCards();
+}
+
+function updateStaticText() {
+  document.querySelector('.hero-eyebrow').textContent = t('eyebrow');
+  const heroTitle = document.querySelector('.hero-title');
+  heroTitle.innerHTML = `${t('hero_title')}<br><em>${t('hero_italic')}</em>`;
+  document.getElementById('search-input').placeholder = t('search_placeholder');
+  // Nav labels
+  const navLabels = document.querySelectorAll('#page-home .nav-label');
+  if(navLabels[0]) navLabels[0].textContent = t('nav_home');
+  if(navLabels[1]) navLabels[1].textContent = t('nav_map');
+  if(navLabels[2]) navLabels[2].textContent = t('nav_offers');
+  if(navLabels[3]) navLabels[3].textContent = t('nav_zone');
+  const fichaNavLabels = document.querySelectorAll('#page-ficha .nav-label');
+  if(fichaNavLabels[0]) fichaNavLabels[0].textContent = t('nav_home');
+  if(fichaNavLabels[1]) fichaNavLabels[1].textContent = t('nav_map');
+  if(fichaNavLabels[2]) fichaNavLabels[2].textContent = t('nav_offers');
+  if(fichaNavLabels[3]) fichaNavLabels[3].textContent = t('nav_zone');
+  // Ficha sections
+  const sectionTitles = document.querySelectorAll('.ficha-section-title');
+  if(sectionTitles[0]) sectionTitles[0].textContent = t('about');
+  if(sectionTitles[1]) sectionTitles[1].textContent = t('schedule');
+  if(sectionTitles[2]) sectionTitles[2].textContent = t('active_offer');
+  if(sectionTitles[3]) sectionTitles[3].textContent = t('location');
+  // Action buttons
+  const actionLabels = document.querySelectorAll('.action-btn-label');
+  if(actionLabels[0]) actionLabels[0].textContent = t('call');
+  if(actionLabels[1]) actionLabels[1].textContent = t('directions');
+  if(actionLabels[2]) actionLabels[2].textContent = t('whatsapp');
+}
+
 let comercios = [];
 const locked = [
   {nombre:"Taller Mecánico Ruiz", cat:"Talleres"},
@@ -850,8 +1010,14 @@ const locked = [
   {nombre:"Ferretería López", cat:"Servicios"},
 ];
 
-const categorias = ["Todos","Restaurantes","Alojamiento","Alimentación","Servicios"];
-let catActiva = "Todos";
+const CAT_KEYS = ['cat_all','cat_restaurants','cat_lodging','cat_food','cat_services'];
+const CAT_ES   = ['Todos','Restaurantes','Alojamiento','Alimentación','Servicios'];
+
+function getCategorias() {
+  return CAT_KEYS.map(k => t(k));
+}
+
+let catActiva = 0; // index into CAT_ES
 let busqueda = "";
 
 // Category icons (SVG)
@@ -902,23 +1068,27 @@ async function cargarComercios() {
 
 // ── RENDER CATS ──
 function renderCats() {
-  document.getElementById('cats-container').innerHTML = categorias.map(cat => `
-    <div class="cat-chip ${cat===catActiva?'active':''}" onclick="selectCat('${cat}')">
-      ${catIcon(cat, cat===catActiva)}
+  const cats = getCategorias();
+  document.getElementById('cats-container').innerHTML = cats.map((cat, i) => `
+    <div class="cat-chip ${i===catActiva?'active':''}" onclick="selectCat(${i})">
+      ${catIcon(CAT_ES[i], i===catActiva)}
       <span class="cat-label">${cat}</span>
     </div>`).join('');
 }
 
-function selectCat(cat) {
-  catActiva = cat;
+function selectCat(idx) {
+  catActiva = idx;
   renderCats();
   renderCards();
 }
 
 // ── RENDER CARDS ──
 function renderCards() {
+  const activeCatES = CAT_ES[catActiva];
+  const activeCatT  = getCategorias()[catActiva];
+
   let filtered = comercios.filter(c => {
-    const matchCat = catActiva === 'Todos' || c.categoria === catActiva;
+    const matchCat = catActiva === 0 || c.categoria === activeCatES;
     const matchSearch = busqueda === '' ||
       c.nombre.toLowerCase().includes(busqueda) ||
       c.categoria.toLowerCase().includes(busqueda) ||
@@ -928,19 +1098,24 @@ function renderCards() {
 
   // Subtitle
   document.getElementById('subtitle-count').textContent =
-    busqueda ? `${filtered.length} resultado${filtered.length!==1?'s':''} encontrado${filtered.length!==1?'s':''}` :
-    catActiva === 'Todos' ? `${comercios.length + locked.length} negocios locales a tu alcance` :
-    `${filtered.length} negocio${filtered.length!==1?'s':''} en ${catActiva}`;
+    busqueda ? t('n_results', filtered.length) :
+    catActiva === 0 ? t('n_businesses', comercios.length + locked.length) :
+    t('n_in_cat', filtered.length, activeCatT);
 
-  // Featured
+  // Featured label
   const dest = filtered.filter(c => c.plan === 'destacado');
   const featSec = document.getElementById('featured-section');
-  featSec.style.display = (dest.length > 0 && busqueda === '') ? 'block' : 'none';
+  if (dest.length > 0 && busqueda === '') {
+    featSec.style.display = 'block';
+    featSec.querySelector('.section-label').textContent = t('featured');
+  } else {
+    featSec.style.display = 'none';
+  }
 
   // Cards
   const cc = document.getElementById('cards-container');
   if (filtered.length === 0) {
-    cc.innerHTML = `<div class="no-results">Sin resultados para esta búsqueda.</div>`;
+    cc.innerHTML = `<div class="no-results">${t('no_results')}</div>`;
   } else {
     cc.innerHTML = filtered.map(c => cardHTML(c)).join('');
   }
@@ -948,10 +1123,11 @@ function renderCards() {
   // Locked
   const lockedSec = document.getElementById('locked-section');
   const lc = document.getElementById('locked-container');
-  if (busqueda !== '' || catActiva !== 'Todos') {
+  if (busqueda !== '' || catActiva !== 0) {
     lockedSec.style.display = 'none';
   } else {
     lockedSec.style.display = 'block';
+    lockedSec.querySelector('.section-label').textContent = t('other_businesses');
     lc.innerHTML = locked.map(l => `
       <div class="locked-card">
         <div class="locked-icon-wrap">
@@ -962,9 +1138,9 @@ function renderCards() {
         </div>
         <div>
           <div class="locked-name">${l.nombre}</div>
-          <div class="locked-sub">Sin información · ${l.cat}</div>
+          <div class="locked-sub">${t('no_info')} · ${l.cat}</div>
         </div>
-        <button class="locked-cta">¿Sos el dueño?</button>
+        <button class="locked-cta">${t('owner_cta')}</button>
       </div>`).join('');
   }
 
@@ -1004,14 +1180,14 @@ function cardHTML(c) {
         <div class="c-card-top">
           <div class="c-card-name">${c.nombre}</div>
           <div class="c-card-plan">
-            <span class="plan-badge ${c.plan==='destacado'?'plan-dest':'plan-bas'}">${c.plan==='destacado'?'Destacado':'Básico'}</span>
+            <span class="plan-badge ${c.plan==='destacado'?'plan-dest':'plan-bas'}">${c.plan==='destacado'?t('plan_dest'):t('plan_bas')}</span>
           </div>
         </div>
         <div class="c-card-cat">${c.categoria}</div>
         <div class="c-card-meta">
           <div class="meta-pill">
             <div class="meta-dot ${isOpen?'dot-open':'dot-closed'}"></div>
-            <span>${isOpen?'Abierto':'Cerrado'}</span>
+            <span>${isOpen?t('open_now'):t('closed')}</span>
           </div>
           <div class="meta-pill">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -1047,13 +1223,28 @@ function openFicha(id) {
 
   const vb = document.getElementById('ficha-verified');
   vb.style.display = c.verified ? 'flex' : 'none';
+  vb.querySelector('span') && (vb.querySelector('span').textContent = ' ' + t('verified'));
 
   const dot = document.getElementById('ficha-status-dot');
   dot.className = `meta-dot ${c.abierto?'dot-open':'dot-closed'}`;
-  document.getElementById('ficha-status-text').textContent = c.abierto ? 'Abierto ahora' : 'Cerrado';
+  document.getElementById('ficha-status-text').textContent = c.abierto ? t('open_now') : t('closed');
   document.getElementById('ficha-dir').textContent = (c.direccion||'').split('·')[0].trim();
   document.getElementById('ficha-desc').textContent = c.desc || c.descripcion || '';
   document.getElementById('ficha-tel-btn').onclick = () => { window.location.href = 'tel:' + (c.tel||'').replace(/\s/g,''); };
+
+  // Action labels
+  const actionLabels = document.querySelectorAll('.action-btn-label');
+  if(actionLabels[0]) actionLabels[0].textContent = t('call');
+  if(actionLabels[1]) actionLabels[1].textContent = t('directions');
+  if(actionLabels[2]) actionLabels[2].textContent = t('whatsapp');
+
+  // Section titles
+  const sectionTitles = document.querySelectorAll('.ficha-section-title');
+  if(sectionTitles[0]) sectionTitles[0].textContent = t('about');
+  if(sectionTitles[1]) sectionTitles[1].textContent = t('schedule');
+  if(sectionTitles[2]) sectionTitles[2].textContent = t('active_offer');
+  if(sectionTitles[3]) sectionTitles[3].textContent = t('location');
+
   document.getElementById('ficha-ubicacion').innerHTML = `
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
       <path d="M7 1C4.79 1 3 2.79 3 5C3 8 7 13 7 13C7 13 11 8 11 5C11 2.79 9.21 1 7 1Z" stroke="#7A7670" stroke-width="1.2"/>
@@ -1061,14 +1252,12 @@ function openFicha(id) {
     </svg>
     ${c.direccion || ''}`;
 
-  // Horarios
   document.getElementById('ficha-horarios').innerHTML = horarios.map(x => `
     <div class="horario-item">
       <div class="horario-day">${x.d}</div>
       <div class="horario-time" style="color:${x.open===false?'#C0392B':x.open?'#2D6A4F':col}">${x.h}</div>
     </div>`).join('');
 
-  // Oferta
   const ofSec = document.getElementById('ficha-oferta-section');
   if (oferta) {
     ofSec.style.display = 'block';
@@ -1096,6 +1285,11 @@ document.getElementById('search-input').addEventListener('input', function() {
 });
 
 // Init
+updateStaticText();
+// Set correct lang button state on load
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+});
 cargarComercios();
 </script>
 </body>
