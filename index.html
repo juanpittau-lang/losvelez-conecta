@@ -641,6 +641,15 @@
     width: 100%;
     z-index: 1;
   }
+  .custom-map-pin {
+    background: none !important;
+    border: none !important;
+  }
+  .custom-map-pin::before,
+  .custom-map-pin::after {
+    display: none !important;
+  }
+
   /* Leaflet popup custom */
   .leaflet-popup-content-wrapper {
     border-radius: 14px !important;
@@ -910,14 +919,14 @@
       </svg>
       <span class="action-btn-label">Llamar</span>
     </button>
-    <button class="action-btn">
+    <button class="action-btn" id="ficha-dir-btn">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
         <path d="M10 3C6.69 3 4 5.69 4 9C4 13.5 10 18 10 18C10 18 16 13.5 16 9C16 5.69 13.31 3 10 3Z" stroke="#3A3830" stroke-width="1.4"/>
         <circle cx="10" cy="9" r="2" fill="#3A3830"/>
       </svg>
       <span class="action-btn-label">Cómo llegar</span>
     </button>
-    <button class="action-btn">
+    <button class="action-btn" id="ficha-wa-btn">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
         <path d="M17 11.5C17 15 14.5 17 10 17L4 18L5 14C3.5 13 3 11.5 3 9.5C3 6 5.5 3 10 3C14.5 3 17 6 17 9.5V11.5Z" stroke="#3A3830" stroke-width="1.4" stroke-linejoin="round"/>
       </svg>
@@ -1508,6 +1517,24 @@ function openFicha(id) {
   document.getElementById('ficha-desc').textContent = c.desc || c.descripcion || '';
   document.getElementById('ficha-tel-btn').onclick = () => { window.location.href = 'tel:' + (c.tel||'').replace(/\s/g,''); };
 
+  // Cómo llegar — Google Maps con coordenadas si las tiene, si no con dirección
+  const dirBtn = document.getElementById('ficha-dir-btn');
+  if (c.lat && c.lng) {
+    dirBtn.onclick = () => window.open(`https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`, '_blank');
+  } else {
+    dirBtn.onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.direccion || c.nombre)}`, '_blank');
+  }
+
+  // WhatsApp
+  const waBtn = document.getElementById('ficha-wa-btn');
+  const telLimpio = (c.tel||'').replace(/[\s\-\(\)]/g,'');
+  if (telLimpio) {
+    waBtn.onclick = () => window.open(`https://wa.me/34${telLimpio}`, '_blank');
+  } else {
+    waBtn.style.opacity = '0.4';
+    waBtn.onclick = null;
+  }
+
   // Action labels
   const actionLabels = document.querySelectorAll('.action-btn-label');
   if(actionLabels[0]) actionLabels[0].textContent = t('call');
@@ -1593,7 +1620,7 @@ function openMapa() {
 function iniciarMapa() {
   mapaInstance = L.map('map', {
     center: [37.6700, -2.0600],
-    zoom: 12,
+    zoom: 13,
     zoomControl: true,
   });
 
@@ -1635,18 +1662,18 @@ function renderMapaMarkers() {
   conCoords.forEach(c => {
     const color = pinColor(c.categoria);
     const icon = L.divIcon({
-      className: '',
+      className: 'custom-map-pin',
       html: `<div style="
         width:22px;height:22px;
         background:${color};
         border-radius:50% 50% 50% 0;
         transform:rotate(-45deg);
-        border:2px solid white;
-        box-shadow:0 2px 6px rgba(0,0,0,0.25);
+        border:2.5px solid white;
+        box-shadow:0 2px 8px rgba(0,0,0,0.3);
       "></div>`,
       iconSize: [22, 22],
       iconAnchor: [11, 22],
-      popupAnchor: [0, -24],
+      popupAnchor: [0, -26],
     });
 
     const marker = L.marker([c.lat, c.lng], { icon }).addTo(mapaInstance);
