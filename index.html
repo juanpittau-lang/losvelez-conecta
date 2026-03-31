@@ -641,16 +641,24 @@
     width: 100%;
     z-index: 1;
   }
+
+  /* ── FIX DEFINITIVO: Triángulos Leaflet ── */
+  .leaflet-marker-shadow,
+  img.leaflet-marker-shadow {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .leaflet-shadow-pane { display: none !important; }
   .custom-map-pin {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
-  /* Eliminar shadow triangular por defecto de Leaflet */
-  .leaflet-marker-shadow { display: none !important; }
-  .leaflet-default-icon-path { display: none !important; }
 
-  /* Filtros del mapa — fix mobile */
+  /* Filtros del mapa */
   .mapa-filtros {
     display: flex;
     gap: 6px;
@@ -744,15 +752,7 @@
     text-align: center;
     letter-spacing: 0.03em;
   }
-  /* Custom pin */
-  .map-pin {
-    width: 28px;
-    height: 28px;
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
+
   /* animations */
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(8px); }
@@ -1241,13 +1241,10 @@ function t(key, ...args) {
 function setLang(newLang) {
   lang = newLang;
   localStorage.setItem('lang', lang);
-  // Update lang buttons
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
   });
-  // Update static UI text
   updateStaticText();
-  // Re-render dynamic content
   renderCats();
   renderCards();
 }
@@ -1257,7 +1254,6 @@ function updateStaticText() {
   const heroTitle = document.querySelector('.hero-title');
   heroTitle.innerHTML = `${t('hero_title')}<br><em>${t('hero_italic')}</em>`;
   document.getElementById('search-input').placeholder = t('search_placeholder');
-  // Nav labels
   const navLabels = document.querySelectorAll('#page-home .nav-label');
   if(navLabels[0]) navLabels[0].textContent = t('nav_home');
   if(navLabels[1]) navLabels[1].textContent = t('nav_map');
@@ -1268,13 +1264,11 @@ function updateStaticText() {
   if(fichaNavLabels[1]) fichaNavLabels[1].textContent = t('nav_map');
   if(fichaNavLabels[2]) fichaNavLabels[2].textContent = t('nav_offers');
   if(fichaNavLabels[3]) fichaNavLabels[3].textContent = t('nav_zone');
-  // Ficha sections
   const sectionTitles = document.querySelectorAll('.ficha-section-title');
   if(sectionTitles[0]) sectionTitles[0].textContent = t('about');
   if(sectionTitles[1]) sectionTitles[1].textContent = t('schedule');
   if(sectionTitles[2]) sectionTitles[2].textContent = t('active_offer');
   if(sectionTitles[3]) sectionTitles[3].textContent = t('location');
-  // Action buttons
   const actionLabels = document.querySelectorAll('.action-btn-label');
   if(actionLabels[0]) actionLabels[0].textContent = t('call');
   if(actionLabels[1]) actionLabels[1].textContent = t('directions');
@@ -1306,10 +1300,9 @@ function getCategorias() {
   return CAT_KEYS.map(k => t(k));
 }
 
-let catActiva = 0; // index into CAT_ES
+let catActiva = 0;
 let busqueda = "";
 
-// Category icons (SVG)
 function catIcon(cat, active) {
   const col = active ? '#FFFFFF' : '#7A7670';
   const icons = {
@@ -1385,13 +1378,11 @@ function renderCards() {
     return matchCat && matchSearch;
   });
 
-  // Subtitle
   document.getElementById('subtitle-count').textContent =
     busqueda ? t('n_results', filtered.length) :
     catActiva === 0 ? t('n_businesses', comercios.length + locked.length) :
     t('n_in_cat', filtered.length, activeCatT);
 
-  // Featured label
   const dest = filtered.filter(c => c.plan === 'destacado');
   const featSec = document.getElementById('featured-section');
   if (dest.length > 0 && busqueda === '') {
@@ -1401,7 +1392,6 @@ function renderCards() {
     featSec.style.display = 'none';
   }
 
-  // Cards
   const cc = document.getElementById('cards-container');
   if (filtered.length === 0) {
     cc.innerHTML = `<div class="no-results">${t('no_results')}</div>`;
@@ -1409,7 +1399,6 @@ function renderCards() {
     cc.innerHTML = filtered.map(c => cardHTML(c)).join('');
   }
 
-  // Locked
   const lockedSec = document.getElementById('locked-section');
   const lc = document.getElementById('locked-container');
   if (busqueda !== '' || catActiva !== 0) {
@@ -1433,7 +1422,6 @@ function renderCards() {
       </div>`).join('');
   }
 
-  // Oferta banner
   const prev = document.querySelector('.oferta-banner');
   if (prev) prev.remove();
   const ofertaC = filtered.find(c => c.oferta && c.plan === 'destacado');
@@ -1513,7 +1501,6 @@ function openFicha(id) {
 
   const vb = document.getElementById('ficha-verified');
   vb.style.display = c.verified ? 'flex' : 'none';
-  vb.querySelector('span') && (vb.querySelector('span').textContent = ' ' + t('verified'));
 
   const dot = document.getElementById('ficha-status-dot');
   dot.className = `meta-dot ${c.abierto?'dot-open':'dot-closed'}`;
@@ -1522,7 +1509,6 @@ function openFicha(id) {
   document.getElementById('ficha-desc').textContent = c.desc || c.descripcion || '';
   document.getElementById('ficha-tel-btn').onclick = () => { window.location.href = 'tel:' + (c.tel||'').replace(/\s/g,''); };
 
-  // Cómo llegar — Google Maps con coordenadas si las tiene, si no con dirección
   const dirBtn = document.getElementById('ficha-dir-btn');
   if (c.lat && c.lng) {
     dirBtn.onclick = () => window.open(`https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`, '_blank');
@@ -1530,23 +1516,21 @@ function openFicha(id) {
     dirBtn.onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.direccion || c.nombre)}`, '_blank');
   }
 
-  // WhatsApp
   const waBtn = document.getElementById('ficha-wa-btn');
   const telLimpio = (c.tel||'').replace(/[\s\-\(\)]/g,'');
   if (telLimpio) {
     waBtn.onclick = () => window.open(`https://wa.me/34${telLimpio}`, '_blank');
+    waBtn.style.opacity = '1';
   } else {
     waBtn.style.opacity = '0.4';
     waBtn.onclick = null;
   }
 
-  // Action labels
   const actionLabels = document.querySelectorAll('.action-btn-label');
   if(actionLabels[0]) actionLabels[0].textContent = t('call');
   if(actionLabels[1]) actionLabels[1].textContent = t('directions');
   if(actionLabels[2]) actionLabels[2].textContent = t('whatsapp');
 
-  // Section titles
   const sectionTitles = document.querySelectorAll('.ficha-section-title');
   if(sectionTitles[0]) sectionTitles[0].textContent = t('about');
   if(sectionTitles[1]) sectionTitles[1].textContent = t('schedule');
@@ -1606,7 +1590,6 @@ function openMapa() {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-mapa').classList.add('active');
 
-  // Actualizar textos de idioma en el mapa
   document.getElementById('mapa-title').textContent = t('nav_map');
   document.getElementById('mapa-nav-home').textContent = t('nav_home');
   document.getElementById('mapa-nav-map').textContent = t('nav_map');
@@ -1623,9 +1606,16 @@ function openMapa() {
 }
 
 function iniciarMapa() {
-  // Eliminar imagen de shadow triangular de Leaflet
+  // ── FIX DEFINITIVO: eliminar sombra triangular de Leaflet ──
   delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.mergeOptions({ shadowUrl: null, shadowSize: null });
+  L.Icon.Default.mergeOptions({
+    shadowUrl: '',
+    shadowRetinaUrl: '',
+    shadowSize: [0, 0],
+    shadowAnchor: [0, 0],
+    iconUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+    iconSize: [0, 0],
+  });
 
   mapaInstance = L.map('map', {
     center: [37.6700, -2.0600],
@@ -1659,7 +1649,6 @@ function filtrarMapa(cat) {
 }
 
 function renderMapaMarkers() {
-  // Limpiar markers anteriores
   mapaMarkers.forEach(m => m.remove());
   mapaMarkers = [];
 
@@ -1705,7 +1694,6 @@ function renderMapaMarkers() {
     mapaMarkers.push(marker);
   });
 
-  // Ajustar vista si hay markers
   if (conCoords.length > 0 && mapaInstance) {
     const group = L.featureGroup(mapaMarkers);
     mapaInstance.fitBounds(group.getBounds().pad(0.1));
@@ -1725,7 +1713,6 @@ document.getElementById('search-input').addEventListener('input', function() {
 
 // Init
 updateStaticText();
-// Set correct lang button state on load
 document.querySelectorAll('.lang-btn').forEach(btn => {
   btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
 });
