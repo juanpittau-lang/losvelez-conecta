@@ -646,6 +646,43 @@
     border: none !important;
     box-shadow: none !important;
   }
+  /* Eliminar shadow triangular por defecto de Leaflet */
+  .leaflet-marker-shadow { display: none !important; }
+  .leaflet-default-icon-path { display: none !important; }
+
+  /* Filtros del mapa — fix mobile */
+  .mapa-filtros {
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--white);
+    border-bottom: 1px solid var(--surface-2);
+    min-height: 44px;
+    align-items: center;
+  }
+  .mapa-filtros::-webkit-scrollbar { display: none; }
+  .mapa-cat-chip {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--surface-3);
+    background: var(--white);
+    cursor: pointer;
+    color: var(--ink-mid);
+    font-family: 'Sora', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .mapa-cat-chip.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: white;
+  }
 
   /* Leaflet popup custom */
   .leaflet-popup-content-wrapper {
@@ -716,36 +753,6 @@
     border: 2px solid white;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
-  .mapa-filtros {
-    display: flex;
-    gap: 6px;
-    padding: 10px 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    background: var(--white);
-    border-bottom: 1px solid var(--surface-2);
-  }
-  .mapa-filtros::-webkit-scrollbar { display: none; }
-  .mapa-cat-chip {
-    flex-shrink: 0;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1.5px solid var(--surface-3);
-    background: var(--white);
-    cursor: pointer;
-    color: var(--ink-mid);
-    font-family: 'Sora', sans-serif;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .mapa-cat-chip.active {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: white;
-  }
-
   /* animations */
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(8px); }
@@ -1461,7 +1468,8 @@ function cardHTML(c) {
       <div class="c-card-body">
         <div class="c-card-top">
           <div class="c-card-name">${c.nombre}</div>
-          <div class="c-card-plan">
+          <div class="c-card-plan" style="display:flex;gap:4px;align-items:center;">
+            ${c.es_demo ? '<span class="plan-badge" style="background:#F0E6DC;color:#8B3E0A;">Demo</span>' : ''}
             <span class="plan-badge ${c.plan==='destacado'?'plan-dest':'plan-bas'}">${c.plan==='destacado'?t('plan_dest'):t('plan_bas')}</span>
           </div>
         </div>
@@ -1615,6 +1623,10 @@ function openMapa() {
 }
 
 function iniciarMapa() {
+  // Eliminar imagen de shadow triangular de Leaflet
+  delete L.Icon.Default.prototype._getIconUrl;
+  L.Icon.Default.mergeOptions({ shadowUrl: null, shadowSize: null });
+
   mapaInstance = L.map('map', {
     center: [37.6700, -2.0600],
     zoom: 13,
