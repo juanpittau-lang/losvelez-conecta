@@ -642,12 +642,9 @@
     z-index: 1;
   }
   .custom-map-pin {
-    background: none !important;
+    background: transparent !important;
     border: none !important;
-  }
-  .custom-map-pin::before,
-  .custom-map-pin::after {
-    display: none !important;
+    box-shadow: none !important;
   }
 
   /* Leaflet popup custom */
@@ -1663,17 +1660,13 @@ function renderMapaMarkers() {
     const color = pinColor(c.categoria);
     const icon = L.divIcon({
       className: 'custom-map-pin',
-      html: `<div style="
-        width:22px;height:22px;
-        background:${color};
-        border-radius:50% 50% 50% 0;
-        transform:rotate(-45deg);
-        border:2.5px solid white;
-        box-shadow:0 2px 8px rgba(0,0,0,0.3);
-      "></div>`,
-      iconSize: [22, 22],
-      iconAnchor: [11, 22],
-      popupAnchor: [0, -26],
+      html: `<svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 0C5.373 0 0 5.373 0 12C0 20 12 32 12 32C12 32 24 20 24 12C24 5.373 18.627 0 12 0Z" fill="${color}"/>
+        <circle cx="12" cy="12" r="5" fill="white" fill-opacity="0.9"/>
+      </svg>`,
+      iconSize: [24, 32],
+      iconAnchor: [12, 32],
+      popupAnchor: [0, -34],
     });
 
     const marker = L.marker([c.lat, c.lng], { icon }).addTo(mapaInstance);
